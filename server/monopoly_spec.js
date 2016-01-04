@@ -601,4 +601,10 @@ describe("Test del Monopoly",function(){
                 expect(usuario.ficha.posicion != 10).toEqual(true); 
                 });
         });
+    describe("Usuario",function(){
+        it("uid ",function(){  
+            var usuario_test = juego.getUser(usuario.uid);
+            expect(usuario_test.uid).toEqual(usuario.uid); 
+        });
+    });
 })

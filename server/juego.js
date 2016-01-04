@@ -217,97 +217,12 @@ function EstadoNoComprable(){
     }
 }
 
-function Ficha(color, posicion,juego){
-    this.color=color;
-    this.saldo = 150000;
-    this.posicion = posicion;
-    this.propiedades = [];
-    this.numPropiedades=0;
-    this.turno = new NoTurno();
-    this.juego=juego;
-    this.tarjetas = [];
-    this.numTarjetas=0;
-    this.carcel=new EstadoLibreCarcel();    
-    
-    this.moverFicha = function (avance){
-        
-        this.turno.moverFicha(avance,this);
-    };
-    
-    this.AvanzarFicha = function (avance){
-            this.posicion = (this.posicion + avance)%40;
-            this.juego.caerCasilla(this);
-    };
-    this.AvanzarFichaCarcel = function (){
-            this.posicion = 10;
-    };
-    
-    this.esBancarrota=function(){
-        return (this.saldo<0) && (this.numPropiedades==0);
-    }
-    
-    this.moverFichaCarcel = function (avance){        
-        this.turno.moverFichaCarcel(avance,this);
-    };
-    
-    this.lanzarDadoTest = function (numero){
-        this.posicion= numero % 40;
-    };
-    
-    this.agregarTitulo = function(titulo){
-		this.propiedades[this.numPropiedades]=titulo;
-        this.numPropiedades++;
-	};
-    
-    this.pagar = function(precio){
-        this.saldo= this.saldo-precio;
-    }
-    
-    this.cobrar = function(precio){
-        this.saldo += precio;
-    }
-    
-    this.quitarTurno=function(){
-        this.turno = new NoTurno();
-    };
-    this.darTurno = function(){
-        this.turno = new Turno();
-    };
-    this.agregarTarjeta = function(tarjeta){
-        this.tarjetas[this.numTarjetas]=tarjeta;
-        this.numTarjetas++;
-    }
-    this.irCarcel=function(){
-        //this.carcel = true;
-        this.carcel = new EstadoCarcel();
-    }
-    this.salirCarcel=function(){
-        //this.carcel = false;
-        this.carcel =  new EstadoLibreCarcel();
-    }
-    this.usarTarjeta = function(){
-        if(this.numTarjetas > 0){
-            this.tarjetas.splice(0,1);
-            this.numTarjetas--;
-            this.salirCarcel();
-        }else{
-            console.log("No tienes Tarjetas");
-        }
-    };
-    
-    this.venderCasa = function(titulo){
-        var indice = this.propiedades.indexOf(titulo);
-        if(indice>=0){
-            this.propiedades[indice].venderCasa(this);
-        }else{
-            console.log("ese titulo no es tuyo");
-        }
-    }    
-}
+
 
 
 
 function Turno(){
+    this.nombre="te toca"
     
     this.moverFicha = function (avance,ficha){
             
@@ -320,6 +235,7 @@ function Turno(){
 }
 
 function NoTurno(){
+    this.nombre="no te toca"
     
     this.moverFicha = function (avance,ficha){            
             console.log("No tienes el turno");
@@ -358,98 +274,7 @@ function EstadoCarcel(){
     };
 }
 
-function Partida(dado){
-    this.usuarios = []
-    this.numUsuarios = 0;
-    this.fichas = [];
-    this.numFichasDisponibles = 0;
-    this.tablero = null;
-    this.dado=dado;
-    this.turno = 0;
-    this.SALDO_MAX = 3000000;
-    this.estado = new EstadoInicio(this);
-    
-    this.getUid=function(){
-		val= (new Date()).valueOf().toString();
-		console.log(val);
-		return val;
-	}
-    
-    this.siguienteEstado = function(){
-        if(this.numUsuarios>1){
-            this.estado = this.estado.siguiente(this);
-        }
-        else{
-            console.log("necesitas mas jugadores");
-        }
-    }
-    
-    this.comprar = function(ficha){
-        this.estado.comprar(ficha);
-    }
-    
-    this.construir = function(ficha){         
-        this.estado.construir(ficha);
-    }
-    
-    this.caerCasilla = function(ficha){  
-                this.tablero.obtenerCasilla(ficha.posicion).caerCasilla(ficha);
-    }
-    
-    this.iniciarTurno=function(){
-        //this.turno = Math.floor((Math.random() * this.numUsuarios));
-        this.turno=0;
-        this.usuarios[this.turno].ficha.darTurno();
-        console.log(this.usuarios[this.turno].nombre);
-    }
-    
-    /*this.finTurnos=function(){
-        this.usuarios[this.turno].ficha.quitarTurno();
-    }*/
-    
-    this.pasarTurno = function(){
-        this.usuarios[this.turno].ficha.quitarTurno();   
-        if(this.usuarios[this.turno].ficha.saldo >= this.SALDO_MAX){
-            console.log("El juego ha terminado, ha ganado el jugador: " + this.usuarios[this.turno].nombre);
-            this.siguienteEstado();
-        }
-        
-        this.turno = (this.turno+1)%this.numUsuarios;
-        this.usuarios[this.turno].ficha.darTurno();
-        
-    }
-    
-    this.eliminarUsuario = function(usuario){
-        var indice=this.usuarios.indexOf(usuario);
-        this.usuarios[indice].ficha.turno=false;
-        this.usuarios.splice(indice,1);
-        if(this.usuarios.length==1){
-            console.log("El juego a terminado... Ha ganado el jugador: " + this.usuarios[0].nombre);
-            this.siguienteEstado();
-        }
-    }
-    
-    
-    this.iniciarJuego=function(numFichasDisponibles){
-        this.numFichasDisponibles = numFichasDisponibles;
-        this.tablero=new Tablero(40);
-        this.tablero.factoryTablero();
-    }
-    
-    this.agregarUsuario = function (usuario){   
-        usuario.uid=this.getUid();
-        this.estado.agregarUsuario(usuario);
-    }
-    
-    this.generarFichas = function(){
-        this.fichas[0] = new Ficha("Rojo",0,this);
-        this.fichas[1] = new Ficha("Verde",0,this);
-        this.fichas[2] = new Ficha("Azul",0,this);
-        this.fichas[3] = new Ficha("Amarillo",0,this);
-        this.fichas[4] = new Ficha("Marron",0,this);
-        this.fichas[5] = new Ficha("Naranja",0,this);
-    }    
-}
+
 
 
 function Tablero(numCasillas){
@@ -498,7 +323,7 @@ function Tablero(numCasillas){
 		this.agregarCasilla(28,new Casilla(new TemaCompañia("Aguas",150),new EstadoNoComprable()))
 		this.agregarCasilla(29,new Casilla(new TemaCalle("Amarillo","Plaza de España",280), new EstadoLibre()))
 		this.agregarCasilla(30,new Casilla(new TemaIrCarcel(),new EstadoNoComprable()))
-		this.agregarCasilla(31,new Casilla(new TemaCalle("Verde","Puerta del SOl",300), new EstadoLibre()))
+		this.agregarCasilla(31,new Casilla(new TemaCalle("Verde","Puerta del SOL",300), new EstadoLibre()))
 		this.agregarCasilla(32,new Casilla(new TemaCalle("Verde","Calle Alcalá",300), new EstadoLibre()))
 		this.agregarCasilla(33,new Casilla(new TemaCajaComunidad(),new EstadoNoComprable()))
 		this.agregarCasilla(34,new Casilla(new TemaCalle("Verde","Gran Vía",320), new EstadoLibre()))
@@ -840,7 +665,7 @@ function Usuario(nombre,juego){
     }
     
     this.iniciarJuego=function(){
-        this.juego.iniciarTurno();
+        this.juego.siguienteEstado();
     }
     
     this.pagarFianzaCarcel=function(){
@@ -852,7 +677,193 @@ function Usuario(nombre,juego){
         this.ficha.usarTarjeta();
     }
 }
-
+function Ficha(color, posicion,juego){
+    this.color=color;
+    this.saldo = 150000;
+    this.posicion = posicion;
+    this.propiedades = [];
+    this.numPropiedades=0;
+    this.turno = new NoTurno();
+    this.juego=juego;
+    this.tarjetas = [];
+    this.numTarjetas=0;
+    this.carcel=new EstadoLibreCarcel();    
+    
+    this.moverFicha = function (avance){
+        
+        this.turno.moverFicha(avance,this);
+    };
+    
+    this.AvanzarFicha = function (avance){
+            this.posicion = (this.posicion + avance)%40;
+            this.juego.caerCasilla(this);
+    };
+    this.AvanzarFichaCarcel = function (){
+            this.posicion = 10;
+    };
+    
+    this.esBancarrota=function(){
+        return (this.saldo<0) && (this.numPropiedades==0);
+    }
+    
+    this.moverFichaCarcel = function (avance){        
+        this.turno.moverFichaCarcel(avance,this);
+    };
+    
+    this.lanzarDadoTest = function (numero){
+        this.posicion= numero % 40;
+    };
+    
+    this.agregarTitulo = function(titulo){
+		this.propiedades[this.numPropiedades]=titulo;
+        this.numPropiedades++;
+	};
+    
+    this.pagar = function(precio){
+        this.saldo= this.saldo-precio;
+    }
+    
+    this.cobrar = function(precio){
+        this.saldo += precio;
+    }
+    
+    this.quitarTurno=function(){
+        this.turno = new NoTurno();
+    };
+    this.darTurno = function(){
+        this.turno = new Turno();
+    };
+    this.agregarTarjeta = function(tarjeta){
+        this.tarjetas[this.numTarjetas]=tarjeta;
+        this.numTarjetas++;
+    }
+    this.irCarcel=function(){
+        //this.carcel = true;
+        this.carcel = new EstadoCarcel();
+    }
+    this.salirCarcel=function(){
+        //this.carcel = false;
+        this.carcel =  new EstadoLibreCarcel();
+    }
+    this.usarTarjeta = function(){
+        if(this.numTarjetas > 0){
+            this.tarjetas.splice(0,1);
+            this.numTarjetas--;
+            this.salirCarcel();
+        }else{
+            console.log("No tienes Tarjetas");
+        }
+    };
+    
+    this.venderCasa = function(titulo){
+        var indice = this.propiedades.indexOf(titulo);
+        if(indice>=0){
+            this.propiedades[indice].venderCasa(this);
+        }else{
+            console.log("ese titulo no es tuyo");
+        }
+    }    
+}
+function Partida(dado){
+    this.usuarios = []
+    this.numUsuarios = 0;
+    this.fichas = [];
+    this.numFichasDisponibles = 0;
+    this.tablero = null;
+    this.dado=dado;
+    this.turno = 0;
+    this.SALDO_MAX = 3000000;
+    this.estado = new EstadoInicio(this);
+    
+    this.getUid=function(){
+		val= (new Date()).valueOf().toString();
+		console.log(val);
+		return val;
+	}
+    
+    
+    this.getUser = function(uid){       
+        for (i = 0; i < this.usuarios.length; i++) { 
+            if(uid == this.usuarios[i].uid) return this.usuarios[i];
+        }
+    }
+    
+    this.siguienteEstado = function(){
+        if(this.numUsuarios>1){
+            this.estado = this.estado.siguiente(this);
+            
+        }
+        else{
+            console.log("necesitas mas jugadores");
+        }
+    }
+    
+    this.comprar = function(ficha){
+        this.estado.comprar(ficha);
+    }
+    
+    this.construir = function(ficha){         
+        this.estado.construir(ficha);
+    }
+    
+    this.caerCasilla = function(ficha){  
+                this.tablero.obtenerCasilla(ficha.posicion).caerCasilla(ficha);
+    }
+    
+    this.iniciarTurno=function(){
+        //this.turno = Math.floor((Math.random() * this.numUsuarios));
+        this.turno=0;
+        this.usuarios[this.turno].ficha.darTurno();
+        //console.log(this.usuarios[this.turno].nombre);
+    }
+    
+    /*this.finTurnos=function(){
+        this.usuarios[this.turno].ficha.quitarTurno();
+    }*/
+    
+    this.pasarTurno = function(){
+        this.usuarios[this.turno].ficha.quitarTurno();   
+        if(this.usuarios[this.turno].ficha.saldo >= this.SALDO_MAX){
+            console.log("El juego ha terminado, ha ganado el jugador: " + this.usuarios[this.turno].nombre);
+            this.siguienteEstado();
+        }
+        
+        this.turno = (this.turno+1)%this.numUsuarios;
+        this.usuarios[this.turno].ficha.darTurno();
+        
+    }
+    
+    this.eliminarUsuario = function(usuario){
+        var indice=this.usuarios.indexOf(usuario);
+        this.usuarios[indice].ficha.turno=false;
+        this.usuarios.splice(indice,1);
+        if(this.usuarios.length==1){
+            console.log("El juego a terminado... Ha ganado el jugador: " + this.usuarios[0].nombre);
+            this.siguienteEstado();
+        }
+    }
+    
+    
+    this.iniciarJuego=function(numFichasDisponibles){
+        this.numFichasDisponibles = numFichasDisponibles;
+        this.tablero=new Tablero(40);
+        this.tablero.factoryTablero();
+    }
+    
+    this.agregarUsuario = function (usuario){   
+        usuario.uid=this.getUid();
+        this.estado.agregarUsuario(usuario);
+    }
+    
+    this.generarFichas = function(){
+        this.fichas[0] = new Ficha("Rojo",0,this);
+        this.fichas[1] = new Ficha("Verde",0,this);
+        this.fichas[2] = new Ficha("Azul",0,this);
+        this.fichas[3] = new Ficha("Amarillo",0,this);
+        this.fichas[4] = new Ficha("Marron",0,this);
+        this.fichas[5] = new Ficha("Naranja",0,this);
+    }    
+}
 
 module.exports.Tablero=Tablero;
 module.exports.Partida=Partida;
