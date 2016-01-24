@@ -1,0 +1,75 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+
+
+<dom-module id="my-casilla-inicio">
+    <style is="custom-style">
+        .casilla_inicio{
+            width: 70px;
+            height: 70px;
+            border-style: solid;            
+            float: left;
+            text-align: center;
+        }
+        .datos{
+            position: absolute;
+            z-index: 1;
+            width: 70px;
+            height: 70px;         
+            float: left;
+            text-align: center;
+        }
+        h5{            
+            margin-top: 10px;
+        }
+       
+  </style>
+    
+    <template>  
+        
+        <div id="elemento" class="casilla_inicio"> 
+            <div class="datos">
+                <h5>{{nombre}}</h5>
+            </div>
+        </div>        
+        
+        
+        
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-casilla-inicio',
+        properties:{
+            nombre: String
+         },
+        ready: function(){  
+        },
+        pintar_ficha: function(color){
+            var ficha = document.createElement('my-ficha');
+            ficha.color=color;
+            ficha.id="ficha";
+            ficha.margin_top="26px";
+            ficha.posicion="absolute";
+            ficha.z_index="2";
+            Polymer.dom(this.$.elemento).appendChild(ficha);
+        },
+         borrar_ficha: function(){
+             var ficha = this.$$('#ficha');
+             if(ficha!=undefined){
+                Polymer.dom(this.$.elemento).removeChild(ficha);
+             }
+        },
+        borrar_casa: function(){
+             var casa = this.$$('#casa');
+             if(casa!=undefined){
+                Polymer.dom(this.$.elemento).removeChild(casa);
+             }
+        }
+    });
+</script>

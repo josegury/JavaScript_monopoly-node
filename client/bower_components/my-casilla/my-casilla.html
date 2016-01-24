@@ -1,0 +1,88 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../my-ficha/my-ficha.html">
+<link rel="import" href="../my-casa/my-casa.html">
+
+
+<dom-module id="my-casilla">
+    <style is="custom-style">
+        .casilla{
+            width: 43.5px;
+            height: 70px;
+            border-style: solid;            
+            float: left;
+        }
+        .casilla_color{
+            width: 100%;
+            height: 15px;
+            background-color: white;
+            border-bottom: solid;
+            text-align: center;
+        }
+        .casilla_nombre{
+            width: 100%;
+            height: 30px;
+            font-size:60%;
+            text-align: center;
+        }
+       
+  </style>
+    
+    <template>  
+        
+        <div id="elemento" class="casilla">
+            <div class="casilla_color" style$="background-color: {{color}}">{{precio}}</div>
+            <div class="casilla_nombre">{{nombre}}</div>
+            <!--<my-casa color="Verde"></my-casa>-->
+        </div>        
+        
+        
+        
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-casilla',
+        properties:{
+            color: String,
+            nombre: String,
+            precio: Number
+         },
+        ready: function(){           
+            
+        },
+        pintar_ficha: function(color){
+            var ficha = document.createElement('my-ficha');
+            ficha.color=color;
+            ficha.id="ficha";
+            ficha.margin_left="12px";
+            Polymer.dom(this.$.elemento).appendChild(ficha);
+            //console.log("se ejecuta");
+        },
+        borrar_ficha: function(){
+             var ficha = this.$$('#ficha');
+             if(ficha!=undefined){
+                Polymer.dom(this.$.elemento).removeChild(ficha);
+             }
+        },
+        borrar_casa: function(){
+             var casa = this.$$('#casa');
+             if(casa!=undefined){
+                Polymer.dom(this.$.elemento).removeChild(casa);
+             }
+        },
+        pintar_casa: function(casas,color){
+            var casa = document.createElement('my-casa');
+            casa.numero=casas;
+            casa.color=color;
+            casa.id="casa";
+            casa.margin_left="12px";
+            Polymer.dom(this.$.elemento).appendChild(casa);
+            //console.log("se ejecuta");
+        }
+    });
+</script>

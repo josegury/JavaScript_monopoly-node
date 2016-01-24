@@ -1,0 +1,64 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="my-ficha">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        
+            
+                     
+             .avatar {
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  border-radius: 50%;
+                  overflow: hidden;
+                  background: #ccc;
+            }
+            .Azul {
+                  background-color: var(--paper-light-blue-300);
+            }
+            .Rojo {
+                  background-color: var(--paper-red-300);
+            }
+            .Naranja {
+                  background-color: var(--paper-orange-300);
+            }
+            .Verde {
+                  background-color: var(--paper-green-300);
+            }
+            .Amarillo {
+                  background-color: var(--paper-yellow-300);
+            }
+            .Marron {
+                  background-color: var(--paper-brown-300);
+            }
+    </style>
+    
+    <template>
+        
+                <div class$="avatar {{color}}" style$=" margin-left: {{margin_left}}; margin-top: {{margin_top}}; position: {{position}}; z-index: {{z_index}};" item-icon></div>
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-ficha',
+        properties:{
+            color: String,
+            nombre: String, 
+            margin_left: String,
+            margin_top: String,
+            position: String,
+            z_index:{
+                type: Number,
+                value: 2
+            }
+        },
+        ready: function(){
+        }
+    });
+</script>

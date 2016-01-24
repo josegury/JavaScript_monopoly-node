@@ -1,0 +1,65 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+<dom-module id="my-mensaje-modal">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        
+    </style>
+    
+    <template>
+        
+               <paper-dialog id="dialog" modal>
+                  <h2>{{titulo}}</h2>
+                  <h4>{{mensaje}}</h4>
+                  <paper-input id="puja" label="puja Pelotis" type="number">
+                  </paper-input>
+                  <div class="buttons">
+                    <paper-button id="aceptar" dialog-confirm autofocus>Aceptar</paper-button>
+                  </div>
+                </paper-dialog>
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-mensaje-modal',
+        properties:{
+            titulo:{
+                type: String,
+                value: "Modal"
+            },
+            mensaje:{
+                type: String,
+                value: "Texto del mensaje modal"
+            }
+            
+        },
+        listeners: {
+            'aceptar.tap': 'aceptarClick',
+        },
+        aceptarClick: function(e){
+              var puja = this.$$('#puja');
+              if(puja.value == ""){
+                puja.value = 0;
+              }
+              pujarCasa(puja.value);  
+        },
+        ready: function(){
+        },
+        abrir_mensaje: function(titulo,mensaje){
+            this.titulo=titulo;
+            this.mensaje=mensaje;
+            var dialog = document.getElementById("dialog");
+            if (dialog) {
+                dialog.open();
+            }
+        }
+        
+    });
+</script>

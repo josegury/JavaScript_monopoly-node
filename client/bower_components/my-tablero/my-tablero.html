@@ -1,0 +1,142 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../my-casilla/my-casilla.html">
+<link rel="import" href="../my-casilla-inicio/my-casilla-inicio.html">
+<link rel="import" href="../my-casilla-lateral/my-casilla-lateral.html">
+
+
+
+<dom-module id="my-tablero">
+    
+    <style is="custom-style">
+        .fila-1{
+            width: 600px;
+            height: 75px;
+            margin-top: 2px;
+        }
+        .fila-2{
+            height: 445px;
+            width: 100px;
+        }
+        .fila-4{
+            height: 445px;
+            width: 75px;
+            float: right;
+        }
+        .tablero{
+            width: 597px;     
+        }
+        
+       
+  </style>
+    
+    <template>  
+        <div class="tablero">
+        <div class="fila-1"> 
+            <my-casilla-inicio id="casilla_20" nombre="Parking gratuito"></my-casilla-inicio> 
+            <my-casilla id="casilla_21" color="red" nombre="Avenida America" precio=220></my-casilla>
+            <my-casilla id="casilla_22" color="white" nombre="Suerte"></my-casilla>
+            <my-casilla id="casilla_23" color="red" nombre="Calle Maria de Molina" precio=220></my-casilla>
+            <my-casilla id="casilla_24" color="red" nombre="Calle Bermudez" precio=240></my-casilla>
+            <my-casilla id="casilla_25" color="white" nombre="Estación de Mediodía" precio=200></my-casilla>
+            <my-casilla id="casilla_26" color="yellow" nombre="Avenida de los Reyes Catolicos" precio=260></my-casilla>
+            <my-casilla id="casilla_27" color="yellow" nombre="Calle Bailén" precio=260></my-casilla>
+            <my-casilla id="casilla_28" color="white" nombre="Aguas" precio=150></my-casilla> 
+            <my-casilla id="casilla_29" color="yellow" nombre="Plaza de España" precio=280></my-casilla>
+            <my-casilla-inicio id="casilla_30" nombre="Ves a la Carcel"></my-casilla-inicio>  
+        </div> 
+            <div class="fila-4"> 
+            <my-casilla-lateral id="casilla_31" color="green" nombre="Puerta del SOL" precio=300></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_32" color="green" nombre="Calle Alcalá" precio=300></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_33" color="white" nombre="Caja Comunidad" precio=200></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_34" color="green" nombre="Gran Vía" precio=320></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_35" color="white" nombre="Estación del Norte" precio=200></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_36" color="white" nombre="Suerte"></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_37" color="darkblue" nombre="Paseo de la Castellana" precio=380></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_38" color="white" nombre="Impuesto" precio=100></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_39" color="darkblue" nombre="Paseo del Prado" precio=400></my-casilla-lateral>              
+        </div>
+        
+        <div class="fila-2"> 
+            <my-casilla-lateral id="casilla_19" color="orange" nombre="Calle Serrano" precio=200></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_18" color="orange" nombre="calle Velazquez" precio=180></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_17" color="white" nombre="Caja Comunidad" precio=200></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_16" color="orange" nombre="Avenida Felipe II" precio=180></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_15" color="white" nombre="Estación de Delicias" precio=200></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_14" color="pink" nombre="Calle Fuencarral" precio=160></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_13" color="pink" nombre="Calle Abierto Aguilera" precio=140></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_12" color="white" nombre="Electricidad" precio=150></my-casilla-lateral>  
+            <my-casilla-lateral id="casilla_11" color="pink" nombre="Calle Bilbao" precio=140></my-casilla-lateral>    
+        </div>         
+         
+        
+        <div class="fila-1"> 
+            <my-casilla-inicio id="casilla_10" nombre="Carcel"></my-casilla-inicio> 
+            <my-casilla id="casilla_9" color="blue" nombre="Calle Bravo Murillo" precio=120></my-casilla> 
+            <my-casilla id="casilla_8" color="blue" nombre="Avenida Reina Victoria" precio=100></my-casilla> 
+            <my-casilla id="casilla_7" color="white" nombre="Suerte"></my-casilla> 
+            <my-casilla id="casilla_6" color="blue" nombre="Glorieta Cuatro Caminos" precio=100></my-casilla>  
+            <my-casilla id="casilla_5" color="white" nombre="Estación de Goya" precio=200></my-casilla> 
+            <my-casilla id="casilla_4" color="white" nombre="Impuesto" precio=200></my-casilla>   
+            <my-casilla id="casilla_3" color="brown" nombre="Plaza Lavapies" precio=60></my-casilla> 
+            <my-casilla id="casilla_2" color="white" nombre="Caja Comunidad" precio=200></my-casilla>   
+            <my-casilla id="casilla_1" color="brown" nombre="Ronda de Valencia" precio=60></my-casilla>     
+            <my-casilla-inicio id="casilla_0" nombre="Casilla de salida 2000P"  ></my-casilla-inicio>  
+        </div>      
+             
+    </div>
+        
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-tablero',
+        ready: function(){   
+            
+            /*var casillas = [];
+            for (i = 0; i < 40; i++) {
+                console.log("casilla_"+i);
+                casillas[i]=this.$$('#casilla_'+i);
+            }
+            console.log(casillas[1].nombre);
+            casillas[5].pintar_ficha("green");
+            casillas[0].pintar_ficha("green");*/
+        },
+        pintarCasas: function(casas){  
+            var casillas = [];
+            for (i = 0; i < 40; i++) {
+                casillas[i]=this.$$('#casilla_'+i);
+                casillas[i].borrar_casa();
+            }
+            
+            for(j=0;j<casas.length;j++){
+                casillas[casas[j].posicion].pintar_casa(casas[j].casas,casas[j].color);
+            }
+           
+        },
+        pintarFichas: function(fichas){  
+            var casillas = [];
+            for (i = 0; i < 40; i++) {
+                casillas[i]=this.$$('#casilla_'+i);
+                casillas[i].borrar_ficha();
+            }
+            
+            for(j=0;j<fichas.length;j++){
+                casillas[fichas[j].posicion].borrar_ficha();
+                casillas[fichas[j].posicion].pintar_ficha(fichas[j].color);
+            }
+           
+        },
+        pintarFicha: function(color,posicion){  
+            var casilla = this.$$('#casilla_'+posicion);
+            
+                casilla.borrar_ficha();
+                casilla.pintar_ficha(color);
+           
+        }
+    });
+</script>

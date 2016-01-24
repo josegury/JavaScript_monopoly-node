@@ -1,0 +1,176 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+
+
+<dom-module id="my-item-propiedades-propiedad">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+    
+        .list {
+      @apply(--layout-vertical);
+      width: auto;
+      height: 180px;
+      overflow: auto;
+            
+    }
+    ::-webkit-scrollbar{
+      width: 0px;
+    }
+    ::-webkit-scrollbar-button{
+      width:8px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track{
+      background:#3c454e;
+      border:thin solid #1a1f25;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb{
+      background: -webkit-linear-gradient(top, #5aafb0, #4ca06d);
+      -webkit-box-shadow:   inset 0 1px 0 rgba(255,255,225,.5),
+                    inset 1px 0 0 rgba(255,255,255,.4),
+                    inset 0 1px 2px rgba(255,255,255,.3);
+
+      border:thin solid #232c34;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+        background: -webkit-linear-gradient(top, #4ca06d, #5aafb0);
+    }
+    /* Pseudo-clase */
+    ::-webkit-scrollbar-thumb:window-inactive {
+      background: rgba(77,161,112,.6);
+    }
+    
+    h4 {
+      margin-left: 8px;
+        color: white;
+    }
+    .avatar {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ccc;
+      color:white;
+      text-align: center;
+    }
+    .Azul {
+          background-color: var(--paper-light-blue-300);
+    }
+    .Rojo {
+          background-color: var(--paper-red-300);
+    }
+    .Naranja {
+          background-color: var(--paper-orange-300);
+    }
+    .Verde {
+          background-color: var(--paper-green-300);
+    }
+    .Amarillo {
+          background-color: var(--paper-yellow-300);
+    }
+    .Marron {
+          background-color: var(--paper-brown-300);
+    }
+    .Rosa {
+          background-color: var(--paper-pink-300);
+    }
+    .Cian {
+          background-color: var(--paper-blue-800);
+    }
+    .container {
+      @apply(--layout-wrap);
+      @apply(--layout-center-center);
+      @apply(--layout-inline);
+    }
+    .flex {
+      @apply(--layout-flex);
+        margin-left: 8px;
+        color: white;
+    }
+    paper-icon-button{
+            color: white;
+        }
+  </style>
+    
+    <template>  
+        
+               <paper-item id$="{{nombre}}">
+                  <div class$="avatar {{color}}" > {{info_hipoteca}} </div> 
+                   <div class="flex">{{nombre}}</div>
+                  <paper-icon-button id="btn_hipotecar" icon="work" title="{{titulo_hipoteca}}"></paper-icon-button>
+                  <paper-icon-button id="btn_vender" icon="shop" title="vender"></paper-icon-button>
+                  <paper-icon-button id="btn_subastar" src="ic_sms_white_24dp_2x.png" title="subastar"></paper-icon-button>
+              </paper-item>
+                 
+        
+        
+        
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-item-propiedades-propiedad',
+         properties:{
+              nombre: String,
+              color: String,
+              posicion: Number,
+              estado_hipoteca: {
+                type:Boolean,
+                value: false
+              },
+              titulo_hipoteca: {
+                type: String,
+                value: "hipotecar"
+              }
+        },
+
+        listeners: {
+            'btn_hipotecar.tap': 'hipotecarClick',
+            'btn_vender.tap': 'venderClick',
+            'btn_subastar.tap': 'subastarClick'
+          },
+          hipotecarClick: function(e){
+            if(!this.estado_hipoteca){
+              this.info_hipoteca="H";
+              hipotecar(this.posicion);
+              this.titulo_hipoteca="Quitar hipoteca";
+            }
+            else{
+              this.info_hipoteca="";
+              quitarHipoteca(this.posicion);
+              this.titulo_hipoteca="Hipotecar";
+            }
+            this.estado_hipoteca=!this.estado_hipoteca;
+             
+          },
+          venderClick: function(e){
+              console.log("solo venta " + this.posicion);
+              venderCasa(this.posicion);
+          },
+          subastarClick: function(e){
+              console.log("solo subasta " + this.posicion);
+              subastarCasa(this.posicion);
+          },
+        ready: function(){            
+            /*this.propiedades = [
+                {color: 'red', nombre: 'Smith'},
+                {color: 'green', nombre: 'Andrews Boyd'},
+                {color: 'blue', nombre: 'Angela Decker'},
+                {color: 'red', nombre: 'Lorem Ipsum'}
+            ];*/
+        }
+    });
+</script>

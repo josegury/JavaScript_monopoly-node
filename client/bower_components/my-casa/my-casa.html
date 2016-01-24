@@ -1,0 +1,78 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="my-casa">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        
+            
+                     
+             .avatar {
+                  display: inline-block;
+                  width: 15px;
+                  height: 15px;
+                  overflow: hidden;
+                  background: #ccc;
+                  position: absolute;
+                  text-align: center;
+                  border-style: solid;
+                  border-width: 1px;
+            }
+            .Azul {
+                  background-color: var(--paper-light-blue-300);
+            }
+            .Rojo {
+                  background-color: var(--paper-red-300);
+            }
+            .Naranja {
+                  background-color: var(--paper-orange-300);
+            }
+            .Verde {
+                  background-color: var(--paper-green-300);
+            }
+            .Amarillo {
+                  background-color: var(--paper-yellow-300);
+            }
+            .Marron {
+                  background-color: var(--paper-brown-300);
+            }
+    </style>
+    
+    <template>
+        
+                <div class$="avatar {{color}}" style$=" margin-left: {{margin_left}}; margin-top: {{margin_top}}; z-index: {{z_index}};" item-icon>{{numero}}</div>
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-casa',
+        properties:{
+            numero:{
+                type:String,
+                value:""
+            },
+            color: {
+                type: String,
+                value: "Verde"
+            },
+            margin_left: {
+                type: String,
+                value: "14px"
+            },
+            margin_top: {
+                type: String,
+                value: "-20px"
+            },
+            z_index:{
+                type: Number,
+                value: 1
+            }
+        },
+        ready: function(){
+        }
+    });
+</script>

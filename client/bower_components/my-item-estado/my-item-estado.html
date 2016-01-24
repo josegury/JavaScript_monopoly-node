@@ -1,0 +1,61 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<dom-module id="my-item-estado">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        :host{
+            width: 100%;
+            height: 100%;
+            overflow:  hidden;
+            display: block;            
+        }
+        h4 {
+          margin-left: 8px;            
+          color: white;
+        }
+        paper-icon-button {
+            color: white;
+            --paper-icon-button-ink-color: white;
+          }
+    </style>
+    
+    <template>
+        <div>
+            <h4>Estado: {{estado}} 
+                <paper-icon-button id="cambiar_estado" icon="redo" title="cambiar estado"></paper-icon-button>
+            </h4>
+            <h4>Estado: {{turno}} </h4>
+        </div>
+            <!--<paper-button id="btn" raised><iron-icon icon="favorite"></iron-icon>{{nextestado}}</paper-button>-->
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-item-estado',
+        properties:{
+            estado: String,
+            turno: String
+        },
+        ready: function(){
+            
+        },
+        eliminiar_boton: function(){
+            var btn = this.$$('#btn');
+            Polymer.dom(this.root).removeChild(btn);
+        },
+        getButton: function(){
+            return this.$$('#btn');
+        }
+    
+    });
+</script>

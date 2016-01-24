@@ -1,0 +1,99 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../my-item-propiedades-propiedad/my-item-propiedades-propiedad.html">
+
+
+<dom-module id="my-item-propiedades">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+    
+        .list {
+      @apply(--layout-vertical);
+      width: auto;
+      height: 180px;
+      overflow: auto;
+            
+    }
+    ::-webkit-scrollbar{
+      width: 0px;
+    }
+    ::-webkit-scrollbar-button{
+      width:8px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track{
+      background:#3c454e;
+      border:thin solid #1a1f25;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb{
+      background: -webkit-linear-gradient(top, #5aafb0, #4ca06d);
+      -webkit-box-shadow:   inset 0 1px 0 rgba(255,255,225,.5),
+                    inset 1px 0 0 rgba(255,255,255,.4),
+                    inset 0 1px 2px rgba(255,255,255,.3);
+
+      border:thin solid #232c34;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+        background: -webkit-linear-gradient(top, #4ca06d, #5aafb0);
+    }
+    /* Pseudo-clase */
+    ::-webkit-scrollbar-thumb:window-inactive {
+      background: rgba(77,161,112,.6);
+    }
+    
+    h4 {
+      margin-left: 8px;
+        color: white;
+    }
+  </style>
+    
+    <template>  
+        
+            <div>
+              <h4>Propiedades</h4>
+              <div class="list" role="listbox">
+                  <template is="dom-repeat" items="{{propiedades}}">  
+                     <!--<paper-item id$="{{item.nombre}}">
+                        <div class$="avatar {{item.color}}" ></div> 
+                         <div class="flex">{{item.nombre}}</div>
+                        <paper-icon-button id="btn_hipotecar_{{item.posicion}}" caca="{{item.posicion}}" icon="work" title="hipotecar"></paper-icon-button>
+                        <paper-icon-button id="btn_vender_{{item.posicion}}" casilla="{{item.posicion}}" icon="shop" title="vender"></paper-icon-button>
+                        <paper-icon-button id="btn_subastar_{{item.posicion}}" casilla="{{item.posicion}}" src="ic_sms_white_24dp_2x.png" title="subastar"></paper-icon-button>
+                    </paper-item>-->
+                    <my-item-propiedades-propiedad nombre="{{item.nombre}}" color="{{item.color}}" posicion="{{item.posicion}}"></my-item-propiedades-propiedad>
+                  </template>
+              </div>
+            </div>
+        
+        
+        
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-item-propiedades',
+        
+        ready: function(){            
+            /*this.propiedades = [
+                {color: 'red', nombre: 'Smith'},
+                {color: 'green', nombre: 'Andrews Boyd'},
+                {color: 'blue', nombre: 'Angela Decker'},
+                {color: 'red', nombre: 'Lorem Ipsum'}
+            ];*/
+        },
+        cargarPropiedades: function(propiedades){
+            this.propiedades = propiedades;
+        }
+    });
+</script>

@@ -138,7 +138,7 @@ describe("Test del Monopoly",function(){
         
         it("Comprobación verde",function(){	
 			expect(tablero.casillas[31].tema.color).toEqual("Verde");
-			expect(tablero.casillas[31].tema.nombre).toEqual("Puerta del SOl");
+			expect(tablero.casillas[31].tema.nombre).toEqual("Puerta del SOL");
             
 			expect(tablero.casillas[32].tema.color).toEqual("Verde");
 			expect(tablero.casillas[32].tema.nombre).toEqual("Calle Alcalá");  
@@ -188,7 +188,7 @@ describe("Test del Monopoly",function(){
 			//expect(tablero.casillas[30].tema.dinero).toEqual();//carcel 
 			expect(tablero.casillas[31].tema.dinero).toEqual(300); 
 			expect(tablero.casillas[32].tema.dinero).toEqual(300); 
-			expect(tablero.casillas[33].tema.dinero).toEqual(); //comunidad
+			expect(tablero.casillas[33].tema.dinero).toEqual(200); //comunidad
 			expect(tablero.casillas[34].tema.dinero).toEqual(320); 
 			expect(tablero.casillas[35].tema.dinero).toEqual(200); //estacion
 			//expect(tablero.casillas[36].tema.dinero).toEqual(); //suerte
@@ -315,7 +315,7 @@ describe("Test del Monopoly",function(){
             usuario.comprar();
             usuario.construir();
            expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa1).toEqual(true);
-          usuario.venderCasa(usuario.ficha.propiedades[0]);
+          usuario.venderCasa(1);
           expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Solar).toEqual(true);
         });
       it("Vender casa 2", function(){
@@ -325,7 +325,7 @@ describe("Test del Monopoly",function(){
             usuario.construir();
           usuario.construir();
            expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa2).toEqual(true);
-          usuario.venderCasa(usuario.ficha.propiedades[0]);
+          usuario.venderCasa(1);
           expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa1).toEqual(true);
         });
       it("Vender casa 3", function(){
@@ -336,7 +336,7 @@ describe("Test del Monopoly",function(){
           usuario.construir();
           usuario.construir();
            expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa3).toEqual(true);
-          usuario.venderCasa(usuario.ficha.propiedades[0]);
+          usuario.venderCasa(1);
           expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa2).toEqual(true);
         });
       it("Vender casa 4", function(){
@@ -348,7 +348,7 @@ describe("Test del Monopoly",function(){
           usuario.construir();
           usuario.construir();
            expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa4).toEqual(true);
-          usuario.venderCasa(usuario.ficha.propiedades[0]);
+          usuario.venderCasa(1);
           expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa3).toEqual(true);
         });
       it("Vender Hotel", function(){
@@ -361,9 +361,16 @@ describe("Test del Monopoly",function(){
           usuario.construir();
           usuario.construir();
            expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Hotel).toEqual(true);
-          usuario.venderCasa(usuario.ficha.propiedades[0]);
+          usuario.venderCasa(1);
           expect(juego.tablero.obtenerCasilla(1).tema.titulo.terreno instanceof modulo.Casa4).toEqual(true);
         }); 
+      it("vender Carcel",function(){
+        juego.siguienteEstado();
+            usuario.ficha.posicion=10;
+            usuario.comprar();
+             usuario.venderCasa(10);
+           expect(usuario.ficha.numPropiedades).toEqual(0);
+      });
   });
   describe("Comprar Estacion",function(){
     it("Comprar Estacion de Goya",function(){         
@@ -488,14 +495,14 @@ describe("Test del Monopoly",function(){
          });
     });
 	describe("Tirada",function(){
-        it("3 Dobles a la carcel",function(){  
+        /*it("3 Dobles a la carcel",function(){  
                 juego.siguienteEstado(); 
                 usuario.tirarDadoTestDobles();       
                 usuario.tirarDadoTestDobles();
                 usuario.tirarDadoTestDobles();       
 
                 expect(juego.tablero.obtenerCasilla(usuario.ficha.posicion).tema.nombre).toEqual("Carcel");   
-            });  
+            }); */ 
          it("Pasa por salida",function(){
              juego.siguienteEstado();
              usuario.ficha.posicion = 39;
@@ -558,7 +565,7 @@ describe("Test del Monopoly",function(){
 	describe("Salir de la Carcel",function(){
             it("3 Dobles ",function(){  
                 usuario.iniciarJuego();
-                usuario.tirarDadoTest(10);
+                usuario.tirarDadoTest(30);
                 usuario_.tirarDadoTest(10);
                 
                 usuario.tirarDadoTestDobles();       
@@ -581,7 +588,7 @@ describe("Test del Monopoly",function(){
             
             it("Sin Tarjeta ",function(){  
                 usuario.iniciarJuego();
-                usuario.tirarDadoTest(10);
+                usuario.tirarDadoTest(30);
                 usuario.usarTarjetaCarcel();
                 usuario_.tirarDadoTest(10);
                           
@@ -605,6 +612,74 @@ describe("Test del Monopoly",function(){
         it("uid ",function(){  
             var usuario_test = juego.getUser(usuario.uid);
             expect(usuario_test.uid).toEqual(usuario.uid); 
+        });
+    });
+    describe("Hipoteca",function(){
+        it("hipotecar ",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            usuario.hipotecar(9);
+            expect(usuario.juego.tablero.obtenerCasilla(9).estadoCasilla instanceof modulo.EstadoHipotecaCasilla).toEqual(true);
+        });
+        it("hipotecar desde otra casilla",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            usuario_.tirarDadoTest(9);            
+            usuario.tirarDadoTest(5);
+            usuario.hipotecar(9);
+            expect(usuario.juego.tablero.obtenerCasilla(9).estadoCasilla instanceof modulo.EstadoHipotecaCasilla).toEqual(true);
+        });
+        it("hipotecar casilla no tuya ",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+
+            usuario_.tirarDadoTest(9);
+            usuario_.hipotecar(9);
+            expect(usuario.juego.tablero.obtenerCasilla(9).estadoCasilla instanceof modulo.EstadoNormalCasilla).toEqual(true);
+        });
+        it("comprobarPropiedad ",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            expect(usuario.ficha.comprobarPropiedad(8)).toEqual(false);
+            expect(usuario.ficha.comprobarPropiedad(9)).toEqual(true);
+        });
+    });
+    describe("Subasta",function(){
+        it("Subasta ",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            usuario.subastar(9);
+            //usuario.hipotecar(9);
+            expect(usuario.juego.estado instanceof modulo.EstadoSubasta).toEqual(true);
+        });
+        it("Pujar",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            usuario.subastar(9);
+            usuario_.tirarDadoTest(9);
+            usuario_.pujar(100);
+            expect(usuario.juego.estado.cantidad ).toEqual(100);
+            expect(usuario.juego.estado.usuario ).toEqual(usuario_);
+        });
+        it("Terminar Subasta",function(){  
+            usuario.iniciarJuego();
+            usuario.tirarDadoTest(9);
+            usuario.comprar();
+            expect(usuario.ficha.numPropiedades).toEqual(1);
+            usuario.subastar(9);
+            usuario_.tirarDadoTest(9);            
+            expect(usuario_.ficha.numPropiedades).toEqual(0);
+            usuario_.pujar(100);
+            usuario.terminarSubasta();
+            expect(usuario.ficha.numPropiedades).toEqual(0);
+            expect(usuario_.ficha.numPropiedades).toEqual(1);
+            expect(usuario.juego.estado instanceof modulo.EstadoJuego).toEqual(true);
         });
     });
 })

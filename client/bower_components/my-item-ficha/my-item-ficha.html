@@ -1,0 +1,71 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="my-item-ficha">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        
+            
+            .usuario {
+              margin-top: 75px;
+              float: right;
+              /*background-image: url("user_bg.jpg");*/
+                
+             padding: 0px;
+                
+            }         
+             .avatar {
+                 margin-left: 20px;
+                 margin-bottom: 16px;
+                  display: inline-block;
+                  width: 75px;
+                  height: 75px;
+                  border-radius: 50%;
+                  overflow: hidden;
+                  background: #ccc;
+            }
+            .Azul {
+                  background-color: var(--paper-light-blue-300);
+            }
+            .Rojo {
+                  background-color: var(--paper-red-300);
+            }
+            .Naranja {
+                  background-color: var(--paper-orange-300);
+            }
+            .Verde {
+                  background-color: var(--paper-green-300);
+            }
+            .Amarillo {
+                  background-color: var(--paper-yellow-300);
+            }
+            .Marron {
+                  background-color: var(--paper-brown-300);
+            }
+    </style>
+    
+    <template>
+        
+            <div class="usuario">   
+                <span>{{nombre}}</span>
+                <div class$="avatar {{color}}" item-icon></div>
+            </div>
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-item-ficha',
+        properties:{
+            color: String,
+            nombre: String,
+            imageSrc: String
+        },
+        ready: function(){
+            //imageSrc="monopoly-client/img/user_bg.jpg";
+        }
+    });
+</script>

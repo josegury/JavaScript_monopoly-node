@@ -1,0 +1,49 @@
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+
+<dom-module id="my-mensaje">
+    <!--<link rel="stylesheet" type="text/css" href="my-item-ficha.css">-->
+    <style is="custom-style">
+        
+    </style>
+    
+    <template>
+        
+               <paper-dialog id="dialog_info" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+                  <h2>{{titulo}}</h2>
+                  <h4>{{mensaje}}</h4>
+                </paper-dialog>
+        
+    </template>    
+          
+          
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'my-mensaje',
+        properties:{
+            titulo:{
+                type: String,
+                value: "Titulo"
+            },
+            mensaje:{
+                type: String,
+                value: "Texto del mensaje"
+            }
+            
+        },
+        ready: function(){
+        },
+        abrir_mensaje: function(titulo,mensaje){
+            this.titulo=titulo;
+            this.mensaje=mensaje;
+            var dialog = document.getElementById("dialog_info");
+            if (dialog) {
+                dialog.open();
+            }
+        }
+        
+    });
+</script>

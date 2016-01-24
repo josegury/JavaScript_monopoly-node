@@ -2,10 +2,7 @@ var url="http://127.0.0.1:1337/";
 var usuarioUid=$.cookie("uid");;
 var socket = io(url);
 
-var coord=[];
-var colorFicha=["red","blue","green","black","yellow","grey"];
-var fichas={lista:colorFicha}
-var posiciones=[];
+
 
 //Sockets
 function socketFunction(){
@@ -14,160 +11,228 @@ function socketFunction(){
 	})
 	
 	socket.on('iniciarPartida',function(){
-		estadoJuego(usuarioUid);
+        getEstado($.cookie("uid"));
 		console.log('socket iniciarpartida');
 	})
     
     socket.on('update',function(){
-		estadoJuego(usuarioUid);
+        getEstado($.cookie("uid"));
 		console.log('socket update');
 	})
+
+    socket.on('subasta',function(data){
+        var mensaje_modal = document.getElementById('mensaje_modal');
+        mensaje_modal.abrir_mensaje("Subasta",data.nombre);
+
+        console.log(data);
+    })
 }
+
+
 
 function inicio(){
     
-    cargarTablero()
-	cargarCoordenadas();
+    
+    var info_ficha = document.getElementById('info_ficha');
+    var fab = document.getElementById('fab');
+        fab.addEventListener('tap', function() { onClickFab(); });   
+    var btn_cambiar_estado = document.getElementById('btn_cambiar_estado');
+    btn_cambiar_estado.addEventListener('tap', function() { cambiarEstado($.cookie("uid")); });
+    var btn_comprar = document.getElementById('btn_comprar');
+    btn_comprar.addEventListener('tap', function() { comprarCasilla($.cookie("uid")); });
+    var btn_construir = document.getElementById('btn_construir');
+    btn_construir.addEventListener('tap', function() { construirCasilla($.cookie("uid")); });
+    
+    if($.cookie("uid")!=undefined){
+        getEstado($.cookie("uid"));         
+    }else{   
+        info_ficha.nombre="Sin Registrar";
+        info_ficha.color="red";
+        //cuadro de dialogo
+        var pedirFicha = document.getElementById('pedirFicha');
+        var pedirFichaNombre = document.getElementById('pedirFichaNombre');
+        pedirFicha.addEventListener('tap', function() { obtenerFicha(pedirFichaNombre.value); });        
+    } 
+}
+
+function onClickDados(){
+    
+            
+            tirarDados($.cookie("uid"));
 	
-	posiciones["red"]=6;
-	cargarFichas(1,ponerFicha);
-	if($.cookie("uid")!=undefined){
-		cargarCookies();
-	}else{
-		mostrarBotonPedirFicha();
-	}
-	socketFunction();
 }
 
-//Funciones para modificar el index.html
-// -- Bonotones
-function mostrarBotonPedirFicha(){
-	$("#botones").append("<p id='zonaPedir'>Nombre: <input type='text' id='nombre' /><button id='pedirBtn'>Pedir Ficha</button></p>");
-	$('#pedirBtn').on("click",function(){	
-		obtenerFicha($("#nombre").val());
-	})
+function pedirRegistro(){
+    var dialog = document.getElementById("dialog_pedirFicha");
+        if (dialog) {
+            dialog.open();
+        }
 }
 
-function mostrarBotonIniciarPartida(){
-	$("#botones").append("<button id='iniciarPartidaBtn'>iniciar Partida</button></p>");
-	$('#iniciarPartidaBtn').on("click",function(){	
-		iniciarPartida(usuarioUid);
-	})
+function onClickFab(){
+    if($.cookie("uid")!=undefined){
+        onClickDados();
+    }
+    else{
+        pedirRegistro();
+    }
 }
 
-function mostrarRefrescar(){
-	$("#botones").append("<button id='refrescarBtn'>refrescar estado</button></p>");
-	$('#refrescarBtn').on("click",function(){	
-		estadoJuego(usuarioUid);
-	})
-}
 
-function mostrarTirar(){
-	$("#botones").append("<button id='tirarBtn'>tirar</button></p>");
-	$('#tirarBtn').on("click",function(){	
-		tirarDados(usuarioUid);
-	})
-}
 
-function quitarBotonPedir(){
-	$("#zonaPedir").remove();
-}
-
-function quitarBotonIniciarPartida(){
-	$("#iniciarPartidaBtn").remove();
-}
-
-function quitarBotonTirarDados(){
-	$('#tirarBtn').remove();
-}
-
-//-- Información
-function mostrarNumUsuarios(numUsuarios){
-	$("#numUsuarios").remove();
-	$("#resultados").append("<p id='numUsuarios'>numUsuarios: "+numUsuarios+"</p>");
-}
-function mostrarNombre(nombre){
-	$("#nombre").remove();
-	$("#resultados").append("<p id='nombre'>Nombre: "+nombre+"</p>");
-}
-function mostrarEstadoJuego(estado){
-	$("#estadoJuego").remove();
-	$("#resultados").append("<p id='estadoJuego'>Estado Juego: "+estado+"</p>");
-}
-
-function mostrarUid(uid){
-	$("#uid").remove();
-	$("#resultados").append("<p id='uid'>uid: "+uid+"</p>");	
-}
-
-function mostrarFicha(ficha){
-	$("#ficha").remove();
-	$("#resultados").append("<p id='ficha'>Ficha: "+ficha+"</p>");	
-}
-
-function mostrarTurno(turno){
-	$("#turno").remove();
-	$("#resultados").append("<p id='turno'>Turno: "+turno+"</p>");	
-}
-
-function mostrarsaldo(saldo){
-	$("#saldo").remove();
-	$("#resultados").append("<p id='saldo'>Saldo: "+saldo+"</p>");	
-}
-
-function mostrarDatosJugador(nombre,uid,ficha,estado,numUsuarios,turno,saldo){
-	mostrarNombre(nombre);
-	mostrarUid(uid);
-    mostrarFicha(ficha);
-    mostrarEstadoJuego(estado);
-    mostrarNumUsuarios(numUsuarios);
-    mostrarTurno(turno);
-    mostrarsaldo(saldo);  
+function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,propiedades, posicion,tarjetas){
     
-    if(turno=="te toca") mostrarTirar();
-    else quitarBotonTirarDados();
-    if(estado == "Jugando") quitarBotonIniciarPartida();
+    var panel = document.getElementById('panel');
+    if(estado=="Jugando"){
+        panel.eliminiar_boton_estado();
+     }
+    if(tarjetas>0){
+        panel.pintar_tarjeta();
+    }else{
+        panel.eliminiar_tarjeta();
+    }
+    var btn_usar_tarjeta = document.getElementById('btn_usar_tarjeta');
+        btn_usar_tarjeta.addEventListener('tap', function() { usarTarjetaCarcel($.cookie("uid")); });  
+
+    
+    
+    
+    var info_ficha = document.getElementById('info_ficha');
+    info_ficha.nombre=nombre;
+    info_ficha.color=color;
+    
+    panel.posicion=posicion;
+        
+    panel.cantidad=saldo; 
+    
+    panel.estado=estado;
+    panel.turno=turno;
+    
+    var info_propiedades = document.getElementById('propiedades');
+    info_propiedades.cargarPropiedades(propiedades);
+    getcasas();
+    getfichas();
+    
+}
+function mostrarMensaje(cabecera,cuerpo){
+    if(cabecera != undefined || cuerpo != undefined){
+        var mensaje = document.getElementById('mensaje');
+        mensaje.abrir_mensaje(cabecera,cuerpo);
+    }
 }
 
-//Funciones para comunicar con el servidor
+//comunicación con el servidor
 function obtenerFicha(nombre){
-	$.getJSON(url+"nuevoJugador/"+nombre,function(data){
-		//guardarCookies(data);
-		quitarBotonPedir();
-		mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
-		almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
-        usuarioUid=data.uid;
-        mostrarBotonIniciarPartida();
-        mostrarRefrescar();
-	})
+     $.getJSON(url+"nuevoJugador/"+nombre,function(data){
+         mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas );
+         almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.posicion);
+    })
 }
 
-function iniciarPartida(uid){
-	$.getJSON(url+"iniciarPartida/"+uid,function(data){
-		//guardarCookies(data);
-		quitarBotonPedir();
-		mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
-		almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
-	})
-}
-
-function estadoJuego(uid){
-    $.getJSON(url+"estadoPartida/"+uid,function(data){		
-		mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);      
-		almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);                                              
-    
-	})
+function cambiarEstado(uid){
+    if($.cookie("uid")!=undefined){
+        $.getJSON(url+"iniciarPartida/"+uid,function(data){
+            
+        });
+    }
 }
 
 function tirarDados(uid){
-    $.getJSON(url+"tirarDados/"+uid,function(data){		
-		mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
-		almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo);
+    $.getJSON(url+"tirarDados/"+uid,function(data){	
+        if(data.mensaje != undefined){
+            mostrarMensaje("casilla", data.mensaje);
+            if(data.status=="fail"){
+                borrarCookie();
+            }
+        }
+        
 	})
 }
 
+function tirarDadoTest(posicion){
+    $.getJSON(url+"tirarDadoTest/"+$.cookie("uid")+"-"+posicion,function(data){ 
+        if(data.mensaje != undefined){
+            mostrarMensaje("casilla", data.mensaje);            
+        }
+        
+    })
+}
+
+function comprarCasilla(uid){
+    $.getJSON(url+"comprar/"+uid,function(data){		
+		
+	})
+}
+function construirCasilla(uid){
+    $.getJSON(url+"construir/"+uid,function(data){		
+		
+	})
+}
+
+function getEstado(uid){
+    $.getJSON(url+"estadoPartida/"+uid,function(data){
+       mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas );
+        almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.posicion);        
+	})
+}
+function getfichas(){
+    $.getJSON(url+"getFichas/",function(data){		
+        var tablero = document.getElementById('tablero');
+        tablero.pintarFichas(data.fichas);
+        tablero.pintarFicha($.cookie("ficha"), $.cookie("posicion"));
+	})
+}
+function getcasas(){
+    $.getJSON(url+"getCasas/",function(data){		
+        var tablero = document.getElementById('tablero');
+        tablero.pintarCasas(data.casas);
+	})
+}
+function usarTarjetaCarcel(uid){
+     $.getJSON(url+"usarTarjetaCarcel/"+uid,function(data){
+         mostrarMensaje("Carcel", data.mensaje);
+    })
+}
+
+function hipotecar(posicion){
+    $.getJSON(url+"hipotecar/"+$.cookie("uid")+"-"+posicion,function(data){
+        console.log(data.status);
+         //.......
+    })
+}
+function quitarHipoteca(posicion){
+    $.getJSON(url+"quitarHipoteca/"+$.cookie("uid")+"-"+posicion,function(data){
+         //.......
+    })
+}
+
+function venderCasa(posicion){
+    console.log(posicion);
+    $.getJSON(url+"vender/"+$.cookie("uid")+"-"+posicion,function(data){
+         //.......
+    })
+}
+
+function subastarCasa(posicion){
+    console.log(posicion);
+    $.getJSON(url+"subasta/"+$.cookie("uid")+"-"+posicion,function(data){
+         //.......
+    })
+}
+
+function pujarCasa(pelotis){
+  //  console.log(posicion);
+    $.getJSON(url+"puja/"+$.cookie("uid")+"-"+pelotis,function(data){
+        
+         //.......
+    })
+}
+
+
+
+
 //coockies
-function almacenarCookie(nombre,uid,ficha,estado,numUsuarios,turno,saldo){
+function almacenarCookie(nombre,uid,ficha,estado,numUsuarios,turno,saldo,posicion){
 	$.cookie('nombre',nombre);
 	$.cookie('uid',uid);
 	$.cookie('ficha',ficha);
@@ -175,8 +240,20 @@ function almacenarCookie(nombre,uid,ficha,estado,numUsuarios,turno,saldo){
 	$.cookie('numUsuarios',numUsuarios);
 	$.cookie('turno',turno);
 	$.cookie('saldo',saldo);
+    $.cookie('posicion',posicion);
 }
-
+function borrarCookie(){
+    $.removeCookie('nombre', { path: '/' });
+    $.removeCookie('uid', { path: '/' });
+    $.removeCookie('ficha', { path: '/' });
+    $.removeCookie('estado', { path: '/' });
+    $.removeCookie('numUsuarios', { path: '/' });
+    $.removeCookie('turno', { path: '/' });
+    $.removeCookie('posicion', { path: '/' });
+    $.removeCookie('saldo', { path: '/' });
+    console.log("borrar cookies");
+}
+/*
 function cargarCookies(){
 	mostrarDatosJugador(
 		$.cookie("nombre"),
@@ -185,84 +262,8 @@ function cargarCookies(){
 		$.cookie("estado"),
 		$.cookie("numUsuarios"),
 		$.cookie("turno"),
-		$.cookie("saldo")
+		$.cookie("saldo"),
+        $.cookie("posicion")
 	)
-}
+}*/
 
-//funciones para dibujar el tablero y las fichas
-
-function cargarTablero(){
-	var canvas=document.getElementById("micanvas");
-	ctx=canvas.getContext("2d");
-	maxX=canvas.width;
-	maxY=canvas.height;
-	img=new Image();
-	img.src="client/img/tablero.png";
-	ctx.drawImage(img,0,0);
-	img.onload=function(){
-		ctx.drawImage(img,0,0);
-	}
-}
-
-function cargarFichas(numJug,callback){
-	var cont=0;
-	//numJug=parseInt($.cookie("numJug")); 
-	for(var i=0;i<numJug;i++){ //colorFicha.length
-		var color=colorFicha[i];
-		var imag=new Image();
-		imag.src="client/img/"+color+".png";
-		fichas.lista[color]=imag;
-		//fichas.posicion[color]=0;
-		ctx.drawImage(fichas.lista[color],maxX,maxY);
-		fichas.lista[color].onload=function(){
-			//ctx.drawImage(fichas.lista[color],maxX-70,maxY-70,30,30);
-			if (++cont>=numJug){
-				callback();
-			}
-		}
-	}	
-}
-
-function cargarCoordenadas(){
-	for(i=0;i<40;i++) coord[i]=[];
-	inc=55;
-	coord[0].push(maxX-inc*1.5)
-	coord[0].push(maxY-inc*1.5);
-    
-    coord[1].push(maxX-inc*3);
-    coord[1].push(maxY-inc*1.5);
-    for (var i=1;i<10;i++){
-        coord[i].push(maxX-inc*(3+i-1));
-        coord[i].push(maxY-inc*1.5);
-    }
-    
-    /*coord[1].push(maxX-inc*2.9);
-	coord[1].push(maxY-inc*1.5);
-    
-    coord[2].push(maxX-inc*4);
-	coord[2].push(maxY-inc*1.5);
-    
-    coord[3].push(maxX-inc*6.5);
-	coord[3].push(maxY-inc*1.5);*/
-
-	//coord[10].push(coord[9][0]-inc)
-	//coord[10].push(coord[9][1]);
-	
-	coord[20].push(inc)
-	coord[20].push(inc);
-
-	coord[30].push(maxX-inc)
-	coord[30].push(inc);
-}
-
-function ponerFicha(){
-	var x,y;
-	var color="red";
-	var posicion=posiciones[color];
-	console.log(color+" "+posicion);
-	if (posicion>=0 && posicion<40){
-		x=coord[posicion][0];
-		y=coord[posicion][1];
-		ctx.drawImage(fichas.lista[color],x,y,30,30);
-	}
-}
