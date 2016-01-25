@@ -16,10 +16,10 @@ var port=config.port;
 var app=express();
 var server=http.createServer(app);
 
- var dado = new modelo.Dado();
- var juego=new modelo.Partida(dado);
-     juego.iniciarJuego(5);
-     juego.generarFichas();
+var dado = new modelo.Dado();
+var juego=new modelo.Partida(dado);
+juego.iniciarJuego(5);
+juego.generarFichas();
 
 
 app.use("/",express.static(__dirname));
@@ -31,18 +31,18 @@ var io = require("socket.io")(server);
 app.get("/",function(request,response){
 	var contenido=fs.readFileSync("./client/index.html");
 	if(!juego){
-        juego=new modelo.Partida(dado);
-        juego.iniciarJuego(5);
-    }
-	response.setHeader("Content-type","text/html");
-	response.send(contenido);
+    juego=new modelo.Partida(dado);
+    juego.iniciarJuego(5);
+  }
+  response.setHeader("Content-type","text/html");
+  response.send(contenido);
 });
 
 
 app.get("/hayJugadores",function(req,res){
 	var jsonData;
-		jsonData={"usuarios":juego.usuarios};
-	res.send(jsonData);
+  jsonData={"usuarios":juego.usuarios};
+  res.send(jsonData);
 });
 
 app.get("/nuevoJugador/:nombre",function(request,response){
@@ -61,89 +61,89 @@ app.get("/iniciarPartida/:uid",function(request,response){
 	var jsonData;
 	
 	var jugador = juego.getUser(request.params.uid);
-    if(jugador != null){
-        if(juego.estado.nombre != "Jugando"){
-            jugador.iniciarJuego();
-           responderIniciarPartida();
-        }
-        jsonData = getJson(request.params.uid);
+  if(jugador != null){
+    if(juego.estado.nombre != "Jugando"){
+      jugador.iniciarJuego();
+      responderIniciarPartida();
     }
-    else{
-        jsonData = getJsonNoUser();
-    }
-    response.send(jsonData);
+    jsonData = getJson(request.params.uid);
+  }
+  else{
+    jsonData = getJsonNoUser();
+  }
+  response.send(jsonData);
 });
 
 app.get("/estadoPartida/:uid",function(request,response){	
-    var jugador = juego.getUser(request.params.uid);
-    var json;
-    if(jugador!=null){
-	   json=getJson(request.params.uid);
-    }else{
-        json=getJsonNoUser();
-    }
-    response.send(json);
+  var jugador = juego.getUser(request.params.uid);
+  var json;
+  if(jugador!=null){
+    json=getJson(request.params.uid);
+  }else{
+    json=getJsonNoUser();
+  }
+  response.send(json);
 });
 
 
 app.get("/tirarDados/:uid",function(request,response){
 	var usuario = juego.getUser(request.params.uid);  
-    var json;
-    if(usuario!=null){
-        if(juego.estado.nombre == "Jugando"){
-            var mensaje = usuario.tirarDado();
-            json={
-                mensaje: mensaje
-            };   
-            update();
-        }else{
-            json={
-                mensaje: "La partida no esta en modo juego"
-            };  
-        }
+  var json;
+  if(usuario!=null){
+    if(juego.estado.nombre == "Jugando"){
+      var mensaje = usuario.tirarDado();
+      json={
+        mensaje: mensaje
+      };   
+      update();
+    }else{
+      json={
+        mensaje: "La partida no esta en modo juego"
+      };  
     }
-    else{
-        json=getJsonNoUser();
-    }
-    console.log(json);
-    response.send(json);
+  }
+  else{
+    json=getJsonNoUser();
+  }
+  console.log(json);
+  response.send(json);
 });
 
 app.get("/tirarDadoTest/:uid-:posicion",function(request,response){
   var usuario = juego.getUser(request.params.uid);  
-    var json;
-    if(usuario!=null){
-        if(juego.estado.nombre == "Jugando"){
-            var mensaje = usuario.tirarDadoTest(parseInt(request.params.posicion));
-            json={
-                mensaje: mensaje
-            };   
-            update();
-        }else{
-            json={
-                mensaje: "La partida no esta en modo juego"
-            };  
-        }
+  var json;
+  if(usuario!=null){
+    if(juego.estado.nombre == "Jugando"){
+      var mensaje = usuario.tirarDadoTest(parseInt(request.params.posicion));
+      json={
+        mensaje: mensaje
+      };   
+      update();
+    }else{
+      json={
+        mensaje: "La partida no esta en modo juego"
+      };  
     }
-    else{
-        json=getJsonNoUser();
-    }
-    console.log(json);
-    response.send(json);
+  }
+  else{
+    json=getJsonNoUser();
+  }
+  console.log(json);
+  response.send(json);
 });
 
 app.get("/comprar/:uid",function(request,response){
 	var usuario = juego.getUser(request.params.uid);
-    var json;
-    if(usuario!=null){
-        usuario.comprar();   
-        update();
-        json=getJson(request.params.uid);
-    }
-    else{
-         json=getJsonNoUser();
-    }
-    response.send(json);
+  var json;
+  if(usuario!=null){
+    usuario.comprar();   
+    update();
+    json=getJson(request.params.uid);
+  }
+  else{
+   json=getJsonNoUser();
+ }
+ response.send(json);
 });
 
 /*app.get("/venderCasa/:uid",function(request,response){
@@ -157,87 +157,87 @@ app.get("/comprar/:uid",function(request,response){
          json=getJsonNoUser();
     }
     response.send(json);
-});*/
+  });*/
 app.get("/construir/:uid",function(request,response){
 	var usuario = juego.getUser(request.params.uid);    
-    var json;
-    if(usuario!=null){
-        usuario.construir(); 
-        update();
-        json=getJson(request.params.uid);
-    }
-    else{
-         json=getJsonNoUser();
-    }
-    response.send(json);
+  var json;
+  if(usuario!=null){
+    usuario.construir(); 
+    update();
+    json=getJson(request.params.uid);
+  }
+  else{
+   json=getJsonNoUser();
+ }
+ response.send(json);
 });
 app.get("/usarTarjetaCarcel/:uid",function(request,response){
 	var usuario = juego.getUser(request.params.uid);   
-    var json;
-    if(usuario!=null){
+  var json;
+  if(usuario!=null){
        //usuario.usarTarjetaCarcel();    
        //json=getJson(request.params.uid);
-        json={
-                "mensaje": usuario.usarTarjetaCarcel()
-            };  
+       json={
+        "mensaje": usuario.usarTarjetaCarcel()
+      };  
     }
     else{
-         json=getJsonNoUser();
-    }
-    response.send(json);
-});
+     json=getJsonNoUser();
+   }
+   response.send(json);
+ });
 
 app.get("/getPropiedades/:uid",function(request,response){
 	var usuario = juego.getUser(request.params.uid);
-    var json;
-    if(usuario!=null){
-        var propiedades= usuario.ficha.propiedades;
-        var newPropiedades=[];
-        for(i=0;i<propiedades.length;i++){
-            newPropiedades[i]= {
-                nombre: propiedades[i].tema.nombre, 
-                color: propiedades[i].tema.color, 
-                posicion: propiedades[i].tema.posicion,
-                estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
-            };
-        }
-        var	jsonData={
-                      "propiedades":newPropiedades
-                     };
-        json=getJson(request.params.uid);
+  var json;
+  if(usuario!=null){
+    var propiedades= usuario.ficha.propiedades;
+    var newPropiedades=[];
+    for(i=0;i<propiedades.length;i++){
+      newPropiedades[i]= {
+        nombre: propiedades[i].tema.nombre, 
+        color: propiedades[i].tema.color, 
+        posicion: propiedades[i].tema.posicion,
+        estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
+      };
     }
-    else{
-         json=getJsonNoUser();
-    }
-    response.send(json);
+    var	jsonData={
+      "propiedades":newPropiedades
+    };
+    json=getJson(request.params.uid);
+  }
+  else{
+   json=getJsonNoUser();
+ }
+ response.send(json);
 });
 
 app.get("/getFichas",function(request,response){
 	var usuarios = juego.usuarios;
-    var fichas = [];
-    for(i=0;i<usuarios.length;i++){
-        fichas[i]={color: usuarios[i].ficha.color, posicion: usuarios[i].ficha.posicion};
-    }
-	var	jsonData={
-                  "fichas":fichas
-                 };
-	response.send(jsonData);
+  var fichas = [];
+  for(i=0;i<usuarios.length;i++){
+    fichas[i]={color: usuarios[i].ficha.color, posicion: usuarios[i].ficha.posicion};
+  }
+  var	jsonData={
+    "fichas":fichas
+  };
+  response.send(jsonData);
 });
 
 app.get("/getCasas",function(request,response){
 	var casillas = juego.tablero.casillas;
-    var casas = [];
-    var j=0;
-    for(i=0;i<casillas.length;i++){
-        if(casillas[i].tema.titulo != undefined && casillas[i].tema.titulo.terreno.numero != "0"){
-            casas[j]={posicion: i, casas: casillas[i].tema.titulo.terreno.numero, color: casillas[i].tema.titulo.terreno.color};
-            j++;
-        }
+  var casas = [];
+  var j=0;
+  for(i=0;i<casillas.length;i++){
+    if(casillas[i].tema.titulo != undefined && casillas[i].tema.titulo.terreno.numero != "0"){
+      casas[j]={posicion: i, casas: casillas[i].tema.titulo.terreno.numero, color: casillas[i].tema.titulo.terreno.color};
+      j++;
     }
-	var	jsonData={
-                  "casas":casas
-                 };
-	response.send(jsonData);
+  }
+  var	jsonData={
+    "casas":casas
+  };
+  response.send(jsonData);
 });
 
 app.get("/hipotecar/:uid-:posicion",function(request,response){
@@ -276,41 +276,41 @@ app.get("/puja/:uid-:pelotis",function(request,response){
 
 // generar json
 function getJson(uid){
-    var jugador = juego.getUser(uid);
-    var propiedades= jugador.ficha.propiedades;
-    var newPropiedades=[];
-    for(i=0;i<propiedades.length;i++){
-       
-        newPropiedades[i]= {
-                nombre: propiedades[i].tema.nombre, 
-                color: propiedades[i].tema.color, 
-                posicion: propiedades[i].tema.posicion,
-                estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
-            };
-    }
-	
-    
-	var	jsonData={"nombre":jugador.nombre,
-                  "uid":jugador.uid,
-                  "color":jugador.ficha.color,
-                  "turno":jugador.ficha.turno.nombre,
-                  "posicion":jugador.ficha.posicion,
-                  "saldo":jugador.ficha.saldo,
-                  "estado":juego.estado.nombre,
-                  "jugadores":juego.numUsuarios,
-                  "propiedades":newPropiedades,
-                  "tarjetas": jugador.ficha.numTarjetas,
-                  "status": "ok"
-                 };
-   // console.log(jsonData);
-    return jsonData;
-}
-function getJsonNoUser(){
-    var	jsonData={
-        "status": "fail",
-         "mensaje": "se ha producido un error con su usuario, posiblemente no este registrado o tenga las cookies caducadas. Por favor recargue la pagina web"
+  var jugador = juego.getUser(uid);
+  var propiedades= jugador.ficha.propiedades;
+  var newPropiedades=[];
+  for(i=0;i<propiedades.length;i++){
+   
+    newPropiedades[i]= {
+      nombre: propiedades[i].tema.nombre, 
+      color: propiedades[i].tema.color, 
+      posicion: propiedades[i].tema.posicion,
+      estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
     };
-    return jsonData;
+  }
+  
+  
+  var	jsonData={"nombre":jugador.nombre,
+  "uid":jugador.uid,
+  "color":jugador.ficha.color,
+  "turno":jugador.ficha.turno.nombre,
+  "posicion":jugador.ficha.posicion,
+  "saldo":jugador.ficha.saldo,
+  "estado":juego.estado.nombre,
+  "jugadores":juego.numUsuarios,
+  "propiedades":newPropiedades,
+  "tarjetas": jugador.ficha.numTarjetas,
+  "status": "ok"
+};
+   // console.log(jsonData);
+   return jsonData;
+ }
+ function getJsonNoUser(){
+  var	jsonData={
+    "status": "fail",
+    "mensaje": "se ha producido un error con su usuario, posiblemente no este registrado o tenga las cookies caducadas. Por favor recargue la pagina web"
+  };
+  return jsonData;
 }
 
 server.listen(port,host);
@@ -325,18 +325,18 @@ io.on('connection',function(client){
 })
 
 function responderIniciarPartida(){
-    console.log('responderIniciarPartida');
-	io.emit("iniciarPartida",{juego:"ok"});
+  console.log('responderIniciarPartida');
+  io.emit("iniciarPartida",{juego:"ok"});
 }
 function update(){
-    console.log('update');
-	io.emit("update",{juego:"ok"});
+  console.log('update');
+  io.emit("update",{juego:"ok"});
 }
 function subasta(casilla){
-    console.log('subasta!! ' + casilla);
-    var json={
-      nombre: casilla.tema.nombre
-    }
+  console.log('subasta!! ' + casilla);
+  var json={
+    nombre: casilla.tema.nombre
+  }
   io.emit("subasta",json);
 }
 

@@ -1,97 +1,96 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Monopoly</title>
-        <script src="client/lib/jquery-min.js"></script>
-	    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-        <script src="client/js/monopoly-client.js"></script>
-        
-        <link rel="import" href="client/bower_components/paper-styles/paper-styles.html" />
+<head>
+    <title>Monopoly</title>
+    <script src="client/lib/jquery-min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="client/js/monopoly-client.js"></script>
+
+    <link rel="import" href="client/bower_components/paper-styles/paper-styles.html" />
     
-        
-        <script src="client/bower_components/webcomponentsjs/webcomponents.js"></script>        
-        <link rel="import" href="client/bower_components/polymer/polymer.html">
-        <link rel="import" href="client/bower_components/paper-toolbar/paper-toolbar.html">
-        
-        <link rel="import" href="client/bower_components/paper-icon-button/paper-icon-button.html">  
-        <link href="client/bower_components/iron-icons/iron-icons.html" rel="import">
-        
-        
-        <link rel="import" href="client/bower_components/paper-drawer-panel/paper-drawer-panel.html">
-        
-        <link rel="import" href="client/bower_components/paper-fab/paper-fab.html">
-        
-        <link rel="import" href="client/bower_components/paper-item/paper-item.html">
-        
-        <link rel="import" href="client/bower_components/my-item-ficha/my-item-ficha.html">
-        <link rel="import" href="client/bower_components/my-item-dinero/my-item-dinero.html">
-        <link rel="import" href="client/bower_components/my-item-estado/my-item-estado.html">
-        <link rel="import" href="client/bower_components/my-item-posicion/my-item-posicion.html">
-        
-        <link rel="import" href="client/bower_components/my-casilla/my-casilla.html">
-        <link rel="import" href="client/bower_components/my-tablero/my-tablero.html">
-        <link rel="import" href="client/bower_components/my-panel/my-panel.html">
-        <link rel="import" href="client/bower_components/my-mensaje/my-mensaje.html">
-        <link rel="import" href="client/bower_components/my-mensaje-modal/my-mensaje-modal.html">
-        <link rel="import" href="client/bower_components/google-signin/google-signin.html">
-        <link rel="import" href="client/bower_components/my-mensaje-registro/my-mensaje-registro.html">
-        
-        <link rel="import" href="client/bower_components/my-item-propiedades/my-item-propiedades.html">
-        
-          <link rel="import" href="client/bower_components/paper-dialog/paper-dialog.html">
-  <link rel="import" href="client/bower_components/paper-button/paper-button.html">
-  <link rel="import" href="client/bower_components/neon-animation/neon-animations.html">
-        
-  <link rel="import" href="client/bower_components/paper-input/paper-input.html">
-        
-        
-        
-    </head>
-    <style is="custom-style">
-        body{
-            width: 100%;
-            padding: 0;
-            margin: 0;
-        }
-        paper-toolbar.main{
-            background-color: var(--paper-blue-500);      
-        }
-         paper-toolbar.opciones{
-            background-color: var(--paper-blue-500);
-             height: 130px;
-            /* background-image: url("./img/user_bg.jpg");*/
-        }
-        paper-fab.add{
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background-color: var(--paper-blue-300);
-        }
-        paper-drawer-panel {
-          --paper-drawer-panel-drawer-container: {
-            background-color: var(--paper-blue-300);
-          }
-            --paper-drawer-panel-main-container: {
-            overflow: auto;
-          }
-            
-        section {
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
-        }
-        
-    
+
+    <script src="client/bower_components/webcomponentsjs/webcomponents.js"></script>        
+    <link rel="import" href="client/bower_components/polymer/polymer.html">
+    <link rel="import" href="client/bower_components/paper-toolbar/paper-toolbar.html">
+
+    <link rel="import" href="client/bower_components/paper-icon-button/paper-icon-button.html">  
+    <link href="client/bower_components/iron-icons/iron-icons.html" rel="import">
+
+
+    <link rel="import" href="client/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+
+    <link rel="import" href="client/bower_components/paper-fab/paper-fab.html">
+
+    <link rel="import" href="client/bower_components/paper-item/paper-item.html">
+
+    <link rel="import" href="client/bower_components/my-item-ficha/my-item-ficha.html">
+    <link rel="import" href="client/bower_components/my-item-dinero/my-item-dinero.html">
+    <link rel="import" href="client/bower_components/my-item-estado/my-item-estado.html">
+    <link rel="import" href="client/bower_components/my-item-posicion/my-item-posicion.html">
+
+    <link rel="import" href="client/bower_components/my-casilla/my-casilla.html">
+    <link rel="import" href="client/bower_components/my-tablero/my-tablero.html">
+    <link rel="import" href="client/bower_components/my-panel/my-panel.html">
+    <link rel="import" href="client/bower_components/my-mensaje/my-mensaje.html">
+    <link rel="import" href="client/bower_components/my-mensaje-modal/my-mensaje-modal.html">
+    <link rel="import" href="client/bower_components/google-signin/google-signin.html">
+
+    <link rel="import" href="client/bower_components/my-item-propiedades/my-item-propiedades.html">
+
+    <link rel="import" href="client/bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="client/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="client/bower_components/neon-animation/neon-animations.html">
+
+    <link rel="import" href="client/bower_components/paper-input/paper-input.html">
+
+
+
+</head>
+<style is="custom-style">
+body{
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
-    </style>
-    
-    <body>
-        <paper-drawer-panel>
-            <div drawer>
-                <paper-toolbar class="opciones">
-                    <my-item-ficha id="info_ficha" nombre="Sin Registrar" color="red"></my-item-ficha>
-                </paper-toolbar>
-                
+paper-toolbar.main{
+    background-color: var(--paper-blue-500);      
+}
+paper-toolbar.opciones{
+    background-color: var(--paper-blue-500);
+    height: 130px;
+    /* background-image: url("./img/user_bg.jpg");*/
+}
+paper-fab.add{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: var(--paper-blue-300);
+}
+paper-drawer-panel {
+  --paper-drawer-panel-drawer-container: {
+    background-color: var(--paper-blue-300);
+}
+--paper-drawer-panel-main-container: {
+    overflow: auto;
+}
+
+section {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+
+}
+</style>
+
+<body>
+    <paper-drawer-panel>
+    <div drawer>
+        <paper-toolbar class="opciones">
+        <my-item-ficha id="info_ficha" nombre="Sin Registrar" color="red"></my-item-ficha>
+    </paper-toolbar>
+
                 <!--<div> 
                     <my-item-posicion id="posicion" posicion=0></my-item-posicion> 
                     <my-item-dinero id="dinero" cantidad=2555></my-item-dinero> 
@@ -107,41 +106,79 @@
             </div>
             <div main>
                 <paper-toolbar class="main">
-                    <paper-icon-button paper-drawer-toggle icon="menu"></paper-icon-button>
-                    <span title class="flex">Monopoly</span>
-                    <paper-icon-button icon="refresh"></paper-icon-button>
-                </paper-toolbar>
-               
-                
+                <paper-icon-button paper-drawer-toggle icon="menu"></paper-icon-button>
+                <span title class="flex">Monopoly</span>
+                <paper-icon-button icon="refresh"></paper-icon-button>
+            </paper-toolbar>
 
-                
-                
-                <!--<paper-dialog id="dialog_pedirFicha" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
-                  <h2>Debe registrarse para poder jugar</h2>
-                  <paper-input id="pedirFichaNombre" label="Nombre Usuario"></paper-input>
 
-    <google-signin brand="google" width="iconOnly" client-id="1054047045356-j8pgqgls9vdef3rl09hapoicumbte0bo.apps.googleusercontent.com"></google-signin>
-                    <div class="buttons">
-                        <paper-button id="pedirFicha" dialog-confirm>Accept</paper-button>
-                    </div>
-                </paper-dialog>-->
-                <my-mensaje-registro id="mensaje_registro"></my-mensaje-registro>
-                <my-mensaje id="mensaje"></my-mensaje>
-                <my-mensaje-modal id="mensaje_modal"></my-mensaje-modal>
-                
-              
-                
-                <my-tablero id="tablero"></my-tablero>
-                <paper-fab id="fab" icon="add" class="add"></paper-fab>
+
+
+
+            <paper-dialog id="dialog_pedirFicha" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>Debe registrarse para poder jugar</h2>
+            <paper-input id="pedirFichaNombre" label="Nombre Usuario"></paper-input>
+
+            <template id="awareness" is="dom-bind">
+                <google-signin brand="google" width="wide" client-id="802865579551-t14nk2g98ohr8mqabcm8bbfmgcphushm.apps.googleusercontent.com"></google-signin>
+                <google-signin-aware
+                scopes="{{scope}}"
+                signed-in="{{signedIn}}"
+                offline="{{offline}}"
+                is-authorized="{{isAuthorized}}"
+                need-additional-auth="{{needAdditionalAuth}}"
+                on-google-signin-aware-success="handleSignIn"
+                on-google-signin-offline-success="handleOffline"
+                on-google-signin-aware-signed-out="handleSignOut"></google-signin-aware>
+            </template>
+            <div class="buttons">
+                <paper-button id="pedirFicha" dialog-confirm>Accept</paper-button>
             </div>
-        </paper-drawer-panel>
-		
-        <script>
-    socketFunction();
-            inicio();
-            
-        
-        </script>
-        
-    </body>
+        </paper-dialog>
+        <!-- <my-mensaje-registro id="mensaje_registro"></my-mensaje-registro>-->
+
+        <my-mensaje id="mensaje"></my-mensaje>
+        <my-mensaje-modal id="mensaje_modal"></my-mensaje-modal>
+
+
+
+        <my-tablero id="tablero"></my-tablero>
+        <paper-fab id="fab" icon="add" class="add"></paper-fab>
+    </div>
+</paper-drawer-panel>
+
+<script>
+socketFunction();
+inicio();
+var user = document.querySelector('#pedirFichaNombre');
+var aware = document.querySelector('#awareness');
+aware.status = 'Not granted';
+aware.offlineCode = 'No offline login.';
+aware.userName = 'N/A';
+aware.handleSignIn = function(response) {
+  this.status = 'Signin granted';
+      // console.log('[Aware] Signin Response', response);
+      this.userName = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+      user.value=gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+  };
+  aware.handleOffline = function(response) {
+      this.offlineCode = response.detail.code;
+  };
+  aware.handleSignOut = function(response) {
+      this.status = 'Signed out';
+      // console.log('[Aware] Signout Response', response);
+      this.userName = 'N/A';
+  };
+  aware.disconnect = function() {
+      var b = document.querySelector('google-signin');
+      var currentUser = gapi.auth2.getAuthInstance().currentUser.get();
+      if (currentUser) {
+        currentUser.disconnect();
+    }
+    gapi.auth2.getAuthInstance().signOut();
+};
+
+</script>
+
+</body>
 </html>

@@ -4,17 +4,17 @@ function Solar(){
     this.color="Verde";
     this.construir = function(tema,ficha){
         ficha.pagar(tema.dinero*this.coste);
-            console.log("casa1 construida");
+        console.log("casa1 construida");
         return new Casa1();
     }
     
     this.vender = function(tema,ficha){
         console.log("--------------------");
-            console.log("se ha eliminado el titulo");
-            var indice = ficha.propiedades.indexOf(tema.titulo);
-            ficha.propiedades.splice(indice,1);
-            tema.titulo=null;
-            ficha.cobrar(tema.dinero);
+        console.log("se ha eliminado el titulo");
+        var indice = ficha.propiedades.indexOf(tema.titulo);
+        ficha.propiedades.splice(indice,1);
+        tema.titulo=null;
+        ficha.cobrar(tema.dinero);
         return this;
     }
     
@@ -26,13 +26,13 @@ function Casa1(){
     this.color="Verde";
     this.construir = function(tema,ficha){
         ficha.pagar(tema.dinero*this.coste);
-            console.log("casa2 construida");
+        console.log("casa2 construida");
         return new Casa2();
     }
     
-     this.vender = function(tema,ficha){
+    this.vender = function(tema,ficha){
         ficha.cobrar(tema.dinero*this.coste);
-            console.log("casa1 vendida");
+        console.log("casa1 vendida");
         return new Solar();
     }
 }
@@ -43,13 +43,13 @@ function Casa2(){
     this.coste=1.4;//40%
     this.construir = function(tema,ficha){
         ficha.pagar(tema.dinero*this.coste);
-            console.log("casa3 construida");
+        console.log("casa3 construida");
         return new Casa3();
     }
     
     this.vender = function(tema,ficha){
         ficha.cobrar(tema.dinero*this.coste);
-            console.log("casa2 vendida");
+        console.log("casa2 vendida");
         return new Casa1();
     }
 }
@@ -59,13 +59,13 @@ function Casa3(){
     this.coste=1.6;//60%
     this.construir = function(tema,ficha){
         ficha.pagar(tema.dinero*this.coste);
-            console.log("casa4 construida");
+        console.log("casa4 construida");
         return new Casa4();
     }
     
     this.vender = function(tema,ficha){
         ficha.cobrar(tema.dinero*this.coste);
-            console.log("casa3 vendida");
+        console.log("casa3 vendida");
         return new Casa2();
     }
 }
@@ -81,7 +81,7 @@ function Casa4(){
     
     this.vender = function(tema,ficha){
         ficha.cobrar(tema.dinero*this.coste);
-            console.log("casa4 vendida");
+        console.log("casa4 vendida");
         return new Casa3();
     }
 }
@@ -96,7 +96,7 @@ function Hotel(){
     }
     this.vender = function(tema,ficha){
         ficha.cobrar(tema.dinero*this.coste);
-            console.log("Hotel vendido");
+        console.log("Hotel vendido");
         return new Casa4();
     }
 }
@@ -201,21 +201,21 @@ function EstadoInicio(juego){
     };
     
     this.construir = function(ficha){             
-            console.log("No puedes construir, el Juego esta en modo Inicio");        
+        console.log("No puedes construir, el Juego esta en modo Inicio");        
     }
     
     this.comprar = function(ficha){
-       console.log("No puedes comprar, el Juego esta en modo Inicio"); 
-    }
-    this.subastar = function(posicion){
-         console.log("No puedes subastar"); 
-    }
-    this.pujar=function (usuario,cantidad){
-        console.log("No puedes pujar"); 
-    };
-    this.terminarSubasta=function(){
-         console.log("No puedes pujar"); 
-    }
+     console.log("No puedes comprar, el Juego esta en modo Inicio"); 
+ }
+ this.subastar = function(posicion){
+   console.log("No puedes subastar"); 
+}
+this.pujar=function (usuario,cantidad){
+    console.log("No puedes pujar"); 
+};
+this.terminarSubasta=function(){
+   console.log("No puedes pujar"); 
+}
 }
 
 function EstadoJuego(juego){
@@ -228,39 +228,39 @@ function EstadoJuego(juego){
     
     this.siguiente=function(){
        // this.juego.finTurnos();
-        return new EstadoFin(this.juego);
-    };
-    this.quitarHipoteca = function(ficha,posicion){
-        ficha.quitarHipotecaCasilla(posicion);
-    };
-    this.hipotecarCasilla = function(ficha,posicion){
-        ficha.hipotecarCasilla(posicion);
-    };
-    this.venderCasa = function(ficha,posicion){
-        console.log(posicion);
-         var titulo = this.juego.tablero.obtenerCasilla(posicion).tema.titulo;
-         if(titulo != undefined){
-            ficha.venderCasa(titulo);
-            }        
-        console.log("ventacasa-usuario");
-    }
-    
-    this.construir = function(ficha){ 
-            this.juego.tablero.obtenerCasilla(ficha.posicion).construir(ficha);
-    }    
-    
-    this.comprar = function(ficha){
-        this.juego.tablero.obtenerCasilla(ficha.posicion).comprar(ficha);
-    }
-    this.subastar = function(posicion,usuario){
-        this.juego.estado = new EstadoSubasta(this.juego,posicion,usuario);
-    }
-    this.pujar=function (usuario,cantidad){
-        console.log("No puedes pujar"); 
-    };
-    this.terminarSubasta=function(){
-         console.log("No puedes pujar"); 
-    }
+       return new EstadoFin(this.juego);
+   };
+   this.quitarHipoteca = function(ficha,posicion){
+    ficha.quitarHipotecaCasilla(posicion);
+};
+this.hipotecarCasilla = function(ficha,posicion){
+    ficha.hipotecarCasilla(posicion);
+};
+this.venderCasa = function(ficha,posicion){
+    console.log(posicion);
+    var titulo = this.juego.tablero.obtenerCasilla(posicion).tema.titulo;
+    if(titulo != undefined){
+        ficha.venderCasa(titulo);
+    }        
+    console.log("ventacasa-usuario");
+}
+
+this.construir = function(ficha){ 
+    this.juego.tablero.obtenerCasilla(ficha.posicion).construir(ficha);
+}    
+
+this.comprar = function(ficha){
+    this.juego.tablero.obtenerCasilla(ficha.posicion).comprar(ficha);
+}
+this.subastar = function(posicion,usuario){
+    this.juego.estado = new EstadoSubasta(this.juego,posicion,usuario);
+}
+this.pujar=function (usuario,cantidad){
+    console.log("No puedes pujar"); 
+};
+this.terminarSubasta=function(){
+   console.log("No puedes pujar"); 
+}
 }
 
 function EstadoFin(juego){
@@ -275,32 +275,32 @@ function EstadoFin(juego){
         return this;
     };
     this.quitarHipoteca = function(ficha,posicion){
-         console.log("El Juego ha finalizado"); 
-    };
-    this.hipotecarCasilla = function(ficha,posicion){
-        console.log("El Juego ha finalizado"); 
-    };
-    this.venderCasa = function(ficha,posicion){
-         console.log("El Juego ha finalizado"); 
-    }
-    
-    this.construir = function(ficha){             
-            console.log("No puedes construir, el Juego ha finalizado");        
-    }
-    
-    this.comprar = function(ficha){
-       console.log("No puedes comprar, el Juego ha finalizado"); 
-    } 
-    this.subastar = function(posicion){
-         console.log("No puedes subastar, el Juego ha finalizado"); 
-    }
-    this.pujar=function (usuario,cantidad){
-        console.log("No puedes pujar, el Juego ha finalizado"); 
-    };
-    this.terminarSubasta=function(){
-         console.log("No puedes pujar, el Juego ha finalizado"); 
-    }
-    
+       console.log("El Juego ha finalizado"); 
+   };
+   this.hipotecarCasilla = function(ficha,posicion){
+    console.log("El Juego ha finalizado"); 
+};
+this.venderCasa = function(ficha,posicion){
+   console.log("El Juego ha finalizado"); 
+}
+
+this.construir = function(ficha){             
+    console.log("No puedes construir, el Juego ha finalizado");        
+}
+
+this.comprar = function(ficha){
+ console.log("No puedes comprar, el Juego ha finalizado"); 
+} 
+this.subastar = function(posicion){
+   console.log("No puedes subastar, el Juego ha finalizado"); 
+}
+this.pujar=function (usuario,cantidad){
+    console.log("No puedes pujar, el Juego ha finalizado"); 
+};
+this.terminarSubasta=function(){
+   console.log("No puedes pujar, el Juego ha finalizado"); 
+}
+
 }
 
 function EstadoSubasta(juego,posicion,usuario){
@@ -312,31 +312,31 @@ function EstadoSubasta(juego,posicion,usuario){
     this.contador=0;
 
     this.subastaCasilla=this.juego.tablero.obtenerCasilla(posicion);
-     this.subastar = function(posicion){
+    this.subastar = function(posicion){
         console.log("El Juego esta en subasta"); 
     }
     this.quitarHipoteca = function(ficha,posicion){
-         console.log("El Juego esta en subasta"); 
-    };
-    this.hipotecarCasilla = function(ficha,posicion){
-        console.log("El Juego esta en subasta");  
-    };
-    this.venderCasa = function(ficha,posicion){
-         console.log("El Juego esta en subasta"); 
+       console.log("El Juego esta en subasta"); 
+   };
+   this.hipotecarCasilla = function(ficha,posicion){
+    console.log("El Juego esta en subasta");  
+};
+this.venderCasa = function(ficha,posicion){
+   console.log("El Juego esta en subasta"); 
+}
+this.pujar=function (usuario,cantidad){
+    if(cantidad > this.cantidad){
+        this.comprador = usuario;
+        this.cantidad=cantidad;
     }
-    this.pujar=function (usuario,cantidad){
-        if(cantidad > this.cantidad){
-            this.comprador = usuario;
-            this.cantidad=cantidad;
-        }
-        this.contador++;
-        if(this.contador == this.juego.numUsuarios){
-             this.terminarSubasta();
-        }
-    };
-    this.terminarSubasta=function(){
-        var titulo = this.subastaCasilla.tema.titulo;
-        
+    this.contador++;
+    if(this.contador == this.juego.numUsuarios){
+       this.terminarSubasta();
+   }
+};
+this.terminarSubasta=function(){
+    var titulo = this.subastaCasilla.tema.titulo;
+    
         this.vendedor.ficha.cobrar(parseInt(this.cantidad));//cobro la subasta
         var indice = titulo.ficha.propiedades.indexOf(titulo);
         titulo.ficha.propiedades.splice(indice,1);//elimino la casilla de las propiedades de la ficha
@@ -358,15 +358,15 @@ function EstadoSubasta(juego,posicion,usuario){
     };
     
     this.construir = function(ficha){             
-            console.log("No puedes construir, el Juego esta en subasta");     
-            return "No puedes construir, el Juego esta en subasta";   
+        console.log("No puedes construir, el Juego esta en subasta");     
+        return "No puedes construir, el Juego esta en subasta";   
     }
     
     this.comprar = function(ficha){
-       console.log("No puedes comprar, el Juego esta en subasta"); 
-       return "No puedes comprar, el Juego esta en subasta";
-    }    
-    
+     console.log("No puedes comprar, el Juego esta en subasta"); 
+     return "No puedes comprar, el Juego esta en subasta";
+ }    
+ 
 }
 
 function EstadoComprado(ficha){
@@ -391,7 +391,7 @@ function EstadoLibre(){
 function EstadoNoComprable(){ 
     this.comprar = function(ficha,casilla){
         console.log("Esta casilla no se puede comprar");
-         return this;
+        return this;
     }
 }
 
@@ -403,7 +403,7 @@ function Turno(){
     this.nombre="te toca"
     
     this.moverFicha = function (avance,ficha){
-            
+        
         return ficha.carcel.moverFicha(avance,ficha);
     };
     
@@ -416,10 +416,10 @@ function NoTurno(){
     this.nombre="no te toca"
     
     this.moverFicha = function (avance,ficha){            
-            console.log("No tienes el turno");
+        console.log("No tienes el turno");
     };
-     this.moverFichaCarcel = function (avance,ficha){
-            console.log("No tienes el turno");        
+    this.moverFichaCarcel = function (avance,ficha){
+        console.log("No tienes el turno");        
     };
 }
 
@@ -526,9 +526,9 @@ function Tablero(numCasillas){
 	}
 	
     this.obtenerCasilla=function(posicion){
-		return this.casillas[posicion]
-	}
-	
+      return this.casillas[posicion]
+  }
+  
 }
 
 
@@ -583,9 +583,9 @@ function TemaCompañia(nombre,dinero){
 	this.nombre=nombre
 	this.dinero=dinero    
     this.caerCasilla=function(ficha){
-         ficha.pagar(this.dinero);
-         return "Pagas a la Compañia de "+ nombre +": " + this.dinero +" Pelotis";
-    }
+       ficha.pagar(this.dinero);
+       return "Pagas a la Compañia de "+ nombre +": " + this.dinero +" Pelotis";
+   }
 }
 
 function TemaEstacion(nombre,dinero,posicion){
@@ -616,10 +616,10 @@ function TemaImpuesto(dinero){
 	this.dinero=dinero   
     
     this.caerCasilla=function(ficha){
-         ficha.pagar(this.dinero);
-         return "Pagas Impuestos: " + this.dinero +" Pelotis";
-    }
-    
+       ficha.pagar(this.dinero);
+       return "Pagas Impuestos: " + this.dinero +" Pelotis";
+   }
+   
 }
 
 function TemaIrCarcel(){
@@ -659,15 +659,15 @@ function TemaSuerte(){
         console.log("Coge una tarjeta...");
         var posTarjeta = Math.floor(Math.random() * 6);             
         //this.tarjetas[posTarjeta].accion(ficha);
-         console.log("La carta escogida es: " + this.tarjetas[posTarjeta].nombre);
-         return "Coge una tarjeta... \n" + this.tarjetas[posTarjeta].accion(ficha);
+        console.log("La carta escogida es: " + this.tarjetas[posTarjeta].nombre);
+        return "Coge una tarjeta... \n" + this.tarjetas[posTarjeta].accion(ficha);
     }
     
     this.caerCasillaTest=function(ficha,posTarjeta){        
         console.log("Coge una tarjeta...");
         var posTarjeta =posTarjeta;             
         this.tarjetas[posTarjeta].accion(ficha);
-         console.log("La carta escogida es: " + this.tarjetas[posTarjeta].nombre);
+        console.log("La carta escogida es: " + this.tarjetas[posTarjeta].nombre);
     }
 }
 
@@ -858,7 +858,7 @@ function Usuario(nombre,juego){
                 this.dobles=1;
             }
         }
-    
+        
     };
     
     
@@ -872,13 +872,13 @@ function Usuario(nombre,juego){
     };
     
     this.comprar = function(){
-         if(this.ficha.esBancarrota()) {
-            console.log("Te han eliminado");
-         }else{
-            this.juego.comprar(this.ficha);
-         }
+       if(this.ficha.esBancarrota()) {
+        console.log("Te han eliminado");
+    }else{
+        this.juego.comprar(this.ficha);
     }
-    this.venderCasa= function(posicion){
+}
+this.venderCasa= function(posicion){
         /*var titulo = juego.tablero.obtenerCasilla(posicion).tema.titulo;
         this.ficha.venderCasa(titulo);        
         console.log("ventacasa-usuario");*/
@@ -888,9 +888,9 @@ function Usuario(nombre,juego){
     this.construir = function(){
         if(this.ficha.esBancarrota()) {
             console.log("Te han eliminado");
-         }else{
+        }else{
             this.juego.construir(this.ficha);
-         }
+        }
     }
     
     this.pagar = function(precio){
@@ -957,12 +957,12 @@ function Ficha(color, posicion,juego){
 
     
     this.AvanzarFicha = function (avance){
-            this.posicion = (this.posicion + avance)%40;
-            this.juego.caerCasilla(this);
+        this.posicion = (this.posicion + avance)%40;
+        this.juego.caerCasilla(this);
     };
     this.AvanzarFichaCarcel = function (){
-            this.posicion = 10;
-            this.carcel = new EstadoCarcel();
+        this.posicion = 10;
+        this.carcel = new EstadoCarcel();
     };
     
     this.esBancarrota=function(){
@@ -978,29 +978,29 @@ function Ficha(color, posicion,juego){
     };
     
     this.agregarTitulo = function(titulo){
-		this.propiedades[this.numPropiedades]=titulo;
-        this.numPropiedades++;
-	};
-    
-    this.pagar = function(precio){
-        this.saldo= this.saldo-precio;
-    }
-    
-    this.cobrar = function(precio){
-        this.saldo += precio;
-    }
-    
-    this.quitarTurno=function(){
-        this.turno = new NoTurno();
-    };
-    this.darTurno = function(){
-        this.turno = new Turno();
-    };
-    this.agregarTarjeta = function(tarjeta){
-        this.tarjetas[this.numTarjetas]=tarjeta;
-        this.numTarjetas++;
-    }
-    this.irCarcel=function(){
+      this.propiedades[this.numPropiedades]=titulo;
+      this.numPropiedades++;
+  };
+  
+  this.pagar = function(precio){
+    this.saldo= this.saldo-precio;
+}
+
+this.cobrar = function(precio){
+    this.saldo += precio;
+}
+
+this.quitarTurno=function(){
+    this.turno = new NoTurno();
+};
+this.darTurno = function(){
+    this.turno = new Turno();
+};
+this.agregarTarjeta = function(tarjeta){
+    this.tarjetas[this.numTarjetas]=tarjeta;
+    this.numTarjetas++;
+}
+this.irCarcel=function(){
         //this.carcel = true;
         this.carcel = new EstadoCarcel();
     }
@@ -1017,15 +1017,15 @@ function Ficha(color, posicion,juego){
                 return "tarjeta usada... sales de la carcel, si tienes el turno tira los dados de nuevo";
             }
             else{
-                 return "No estas encerrado en la carcel";
-            }
-        }else{
-            console.log("No tienes Tarjetas");
+               return "No estas encerrado en la carcel";
+           }
+       }else{
+        console.log("No tienes Tarjetas");
              //return "No tienes tarjetas";
-        }
-    };
-    
-    this.venderCasa = function(titulo){
+         }
+     };
+     
+     this.venderCasa = function(titulo){
         var indice = this.propiedades.indexOf(titulo);
         if(indice>=0){
             this.propiedades[indice].venderCasa(this);
@@ -1046,50 +1046,50 @@ function Partida(dado){
     this.estado = new EstadoInicio(this);
     
     this.getUid=function(){
-		val= (new Date()).valueOf().toString();
-		console.log(val);
-		return val;
-	}
+      val= (new Date()).valueOf().toString();
+      console.log(val);
+      return val;
+  }
 
-    this.hipotecarCasilla = function(posicion){
-        return this.tablero.obtenerCasilla(posicion).hipotecar();
+  this.hipotecarCasilla = function(posicion){
+    return this.tablero.obtenerCasilla(posicion).hipotecar();
+}
+this.quitarHipotecaCasilla = function(posicion){
+    return this.tablero.obtenerCasilla(posicion).quitarHipoteca();
+}
+
+
+
+this.getUser = function(uid){       
+    for (i = 0; i < this.usuarios.length; i++) { 
+        if(uid == this.usuarios[i].uid) return this.usuarios[i];
     }
-    this.quitarHipotecaCasilla = function(posicion){
-        return this.tablero.obtenerCasilla(posicion).quitarHipoteca();
+    return null;
+}
+
+this.siguienteEstado = function(){
+    if(this.numUsuarios>1){
+        this.estado = this.estado.siguiente(this);
+        
     }
-    
-    
-    
-    this.getUser = function(uid){       
-        for (i = 0; i < this.usuarios.length; i++) { 
-            if(uid == this.usuarios[i].uid) return this.usuarios[i];
-        }
-        return null;
+    else{
+        console.log("necesitas mas jugadores");
     }
-    
-    this.siguienteEstado = function(){
-        if(this.numUsuarios>1){
-            this.estado = this.estado.siguiente(this);
-            
-        }
-        else{
-            console.log("necesitas mas jugadores");
-        }
-    }
-    
-    this.comprar = function(ficha){
-        this.estado.comprar(ficha);
-    }
-    
-    this.construir = function(ficha){         
-        this.estado.construir(ficha);
-    }
-    
-    this.caerCasilla = function(ficha){  
-                return this.tablero.obtenerCasilla(ficha.posicion).caerCasilla(ficha);
-    }
-    
-    this.iniciarTurno=function(){
+}
+
+this.comprar = function(ficha){
+    this.estado.comprar(ficha);
+}
+
+this.construir = function(ficha){         
+    this.estado.construir(ficha);
+}
+
+this.caerCasilla = function(ficha){  
+    return this.tablero.obtenerCasilla(ficha.posicion).caerCasilla(ficha);
+}
+
+this.iniciarTurno=function(){
         //this.turno = Math.floor((Math.random() * this.numUsuarios));
         this.turno=0;
         this.usuarios[this.turno].ficha.darTurno();
