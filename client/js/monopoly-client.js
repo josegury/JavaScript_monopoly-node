@@ -1,4 +1,5 @@
-var url="http://127.0.0.1:1337/";
+//var url="http://127.0.0.1:1337/";
+var url="http://monoply.cloudapp.net/"
 var usuarioUid=$.cookie("uid");;
 var socket = io(url);
 
@@ -49,9 +50,9 @@ function inicio(){
         info_ficha.nombre="Sin Registrar";
         info_ficha.color="red";
         //cuadro de dialogo
-        var pedirFicha = document.getElementById('pedirFicha');
+        /*var pedirFicha = document.getElementById('pedirFicha');
         var pedirFichaNombre = document.getElementById('pedirFichaNombre');
-        pedirFicha.addEventListener('tap', function() { obtenerFicha(pedirFichaNombre.value); });        
+        pedirFicha.addEventListener('tap', function() { obtenerFicha(pedirFichaNombre.value); });  */      
     } 
 }
 
@@ -63,10 +64,12 @@ function onClickDados(){
 }
 
 function pedirRegistro(){
-    var dialog = document.getElementById("dialog_pedirFicha");
-        if (dialog) {
+    var dialog = document.getElementById("mensaje_registro");
+    //var dialog = document.getElementById("dialog_pedirFicha");
+        dialog.abrir_mensaje();
+        /*if (dialog) {
             dialog.open();
-        }
+        }*/
 }
 
 function onClickFab(){

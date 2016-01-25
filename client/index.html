@@ -36,6 +36,7 @@
         <link rel="import" href="client/bower_components/my-mensaje/my-mensaje.html">
         <link rel="import" href="client/bower_components/my-mensaje-modal/my-mensaje-modal.html">
         <link rel="import" href="client/bower_components/google-signin/google-signin.html">
+        <link rel="import" href="client/bower_components/my-mensaje-registro/my-mensaje-registro.html">
         
         <link rel="import" href="client/bower_components/my-item-propiedades/my-item-propiedades.html">
         
@@ -115,7 +116,7 @@
 
                 
                 
-                <paper-dialog id="dialog_pedirFicha" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+                <!--<paper-dialog id="dialog_pedirFicha" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
                   <h2>Debe registrarse para poder jugar</h2>
                   <paper-input id="pedirFichaNombre" label="Nombre Usuario"></paper-input>
 
@@ -123,7 +124,8 @@
                     <div class="buttons">
                         <paper-button id="pedirFicha" dialog-confirm>Accept</paper-button>
                     </div>
-                </paper-dialog>
+                </paper-dialog>-->
+                <my-mensaje-registro id="mensaje_registro"></my-mensaje-registro>
                 <my-mensaje id="mensaje"></my-mensaje>
                 <my-mensaje-modal id="mensaje_modal"></my-mensaje-modal>
                 

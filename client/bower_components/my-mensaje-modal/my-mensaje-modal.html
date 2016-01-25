@@ -55,7 +55,7 @@
         abrir_mensaje: function(titulo,mensaje){
             this.titulo=titulo;
             this.mensaje=mensaje;
-            var dialog = document.getElementById("dialog");
+            var dialog = this.$$('#dialog');
             if (dialog) {
                 dialog.open();
             }
