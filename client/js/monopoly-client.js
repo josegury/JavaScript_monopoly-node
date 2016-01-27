@@ -1,5 +1,5 @@
-//var url="http://127.0.0.1:1337/";
-var url="http://monoply.cloudapp.net/"
+var url="http://127.0.0.1/";
+//var url="http://monoply.cloudapp.net/"
 var usuarioUid=$.cookie("uid");;
 var socket = io(url);
 
@@ -83,7 +83,7 @@ function onClickFab(){
 
 
 
-function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,propiedades, posicion,tarjetas){
+function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,propiedades, posicion,tarjetas,carcel){
     
     var panel = document.getElementById('panel');
     if(estado=="Jugando"){
@@ -98,7 +98,13 @@ function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,pro
     btn_usar_tarjeta.addEventListener('tap', function() { usarTarjetaCarcel($.cookie("uid")); });  
 
     
-    
+    console.log(carcel);
+    if(carcel=="Libre"){
+        panel.eliminiar_carcel();
+    }
+    else{
+        panel.pintar_carcel();
+    }
     
     var info_ficha = document.getElementById('info_ficha');
     info_ficha.nombre=nombre;
@@ -127,7 +133,7 @@ function mostrarMensaje(cabecera,cuerpo){
 //comunicación con el servidor
 function obtenerFicha(nombre){
    $.getJSON(url+"nuevoJugador/"+nombre,function(data){
-       mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas );
+       mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas,data.carcel );
        almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.posicion);
    })
 }
@@ -174,8 +180,8 @@ function construirCasilla(uid){
 
 function getEstado(uid){
     $.getJSON(url+"estadoPartida/"+uid,function(data){
-     mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas );
-     almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.posicion);        
+     mostrarDatosJugador(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.propiedades, data.posicion,data.tarjetas,data.carcel );
+       almacenarCookie(data.nombre,data.uid,data.color,data.estado,data.jugadores,data.turno,data.saldo,data.posicion);        
  })
 }
 function getfichas(){
@@ -210,25 +216,34 @@ function quitarHipoteca(posicion){
 }
 
 function venderCasa(posicion){
-    console.log(posicion);
     $.getJSON(url+"vender/"+$.cookie("uid")+"-"+posicion,function(data){
          //.......
      })
 }
 
 function subastarCasa(posicion){
-    console.log(posicion);
     $.getJSON(url+"subasta/"+$.cookie("uid")+"-"+posicion,function(data){
          //.......
      })
 }
-
+function pagarFianzaCarcel(){
+    $.getJSON(url+"pagarFianzaCarcel/"+$.cookie("uid"),function(data){
+         //.......
+     })
+}
 function pujarCasa(pelotis){
   //  console.log(posicion);
+     var mensaje_modal = document.getElementById('mensaje_modal');
+  if($.cookie("saldo") < pelotis){
+    //mandar mensaje de nuevo
+        mensaje_modal.abrir_mensaje("Subasta","No puedes ofrecer mas dinero del que tienes");
+  }
+  else{
   $.getJSON(url+"puja/"+$.cookie("uid")+"-"+pelotis,function(data){
     
          //.......
-     })
+    })
+  }
 }
 
 

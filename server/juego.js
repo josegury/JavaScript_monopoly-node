@@ -3,9 +3,12 @@ function Solar(){
     this.numero="0";
     this.color="Verde";
     this.construir = function(tema,ficha){
+        if(ficha.saldo >= tema.dinero*this.coste ){
         ficha.pagar(tema.dinero*this.coste);
         console.log("casa1 construida");
         return new Casa1();
+        }
+        return this;
     }
     
     this.vender = function(tema,ficha){
@@ -25,9 +28,12 @@ function Casa1(){
     this.numero="1";
     this.color="Verde";
     this.construir = function(tema,ficha){
+         if(ficha.saldo >= tema.dinero*this.coste ){
         ficha.pagar(tema.dinero*this.coste);
         console.log("casa2 construida");
         return new Casa2();
+        }
+        return this;
     }
     
     this.vender = function(tema,ficha){
@@ -42,9 +48,12 @@ function Casa2(){
     this.color="Verde";
     this.coste=1.4;//40%
     this.construir = function(tema,ficha){
+         if(ficha.saldo >= tema.dinero*this.coste ){
         ficha.pagar(tema.dinero*this.coste);
         console.log("casa3 construida");
         return new Casa3();
+        }
+        return this;
     }
     
     this.vender = function(tema,ficha){
@@ -58,9 +67,12 @@ function Casa3(){
     this.color="Verde";
     this.coste=1.6;//60%
     this.construir = function(tema,ficha){
+         if(ficha.saldo >= tema.dinero*this.coste ){
         ficha.pagar(tema.dinero*this.coste);
         console.log("casa4 construida");
         return new Casa4();
+        }
+        return this;
     }
     
     this.vender = function(tema,ficha){
@@ -74,9 +86,12 @@ function Casa4(){
     this.color="Verde";
     this.coste=1.8;//80%
     this.construir = function(tema,ficha){
+        if(ficha.saldo >= tema.dinero*this.coste ){
         ficha.pagar(tema.dinero*this.coste);
         console.log("Hotel construido");
         return new Hotel();
+        }
+        return this;
     }
     
     this.vender = function(tema,ficha){
@@ -307,7 +322,7 @@ function EstadoSubasta(juego,posicion,usuario){
     this.juego=juego;
     this.nombre="Subasta";
     this.vendedor=usuario;
-    this.comprador=null;
+    this.comprador=usuario;
     this.cantidad=0;
     this.contador=0;
 
@@ -381,10 +396,13 @@ function EstadoComprado(ficha){
 
 function EstadoLibre(){
     this.comprar = function(ficha,casilla){
+        if(ficha.saldo >= casilla.tema.dinero){
         console.log("La " +  casilla.tema.nombre +" se ha comprado");
         ficha.pagar(casilla.tema.dinero);
         casilla.tema.asignarTitulo(ficha);
         return new EstadoComprado(ficha);
+        }
+        return this;
     }
 }
 
@@ -424,6 +442,7 @@ function NoTurno(){
 }
 
 function EstadoLibreCarcel(){
+    this.nombre = "Libre";
     this.moverFicha = function (avance,ficha){
         var postAnt = ficha.posicion;
         ficha.posicion = (ficha.posicion + avance)%40;
@@ -444,6 +463,7 @@ function EstadoLibreCarcel(){
 }
 
 function EstadoCarcel(){
+    this.nombre = "Carcel";
     this.contador=0;
     this.moverFicha = function (avance,ficha){
         console.log("estas en la carcel");
@@ -451,7 +471,7 @@ function EstadoCarcel(){
         {
             this.contador = 0;
             ficha.pagar(100);
-            return this.moverFichaCarcel();
+            return this.moverFichaCarcel(avance,ficha);
         }
         this.contador++;
         ficha.juego.pasarTurno();   
@@ -459,7 +479,8 @@ function EstadoCarcel(){
     };
     
     this.moverFichaCarcel = function (avance,ficha){
-        ficha.salirCarcel();//salgo de la carcel        
+        //ficha.salirCarcel();//salgo de la carcel        
+        ficha.carcel= new EstadoLibreCarcel();
         return "Sales de la carcel. \n" +  ficha.moverFicha(avance);
     };
 }
@@ -811,7 +832,7 @@ function Usuario(nombre,juego){
                 mensaje = "Has sacado dobles. "+ posiciones1 + " - "+ posiciones2 + ", tiras otra vez" ;
             }
             else{
-                mensaje= this.ficha.moverFicha(posiciones1+posiciones2 );
+                mensaje = this.ficha.moverFicha(posiciones1+posiciones2 );
                 this.dobles=1;
             }
         }
@@ -819,7 +840,7 @@ function Usuario(nombre,juego){
         if(this.ficha.esBancarrota()) {            
             this.juego.eliminarUsuario(this);
             console.log("Te han eliminado");
-            mensaje="Te han eliminado";
+            mensaje = "Estas en Bancarrota, has perdido";
         }
         return mensaje;
     };
@@ -864,19 +885,21 @@ function Usuario(nombre,juego){
     
     this.tirarDadoTest = function(posicion){
         var posiciones = posicion;
-        return this.ficha.moverFicha(posiciones);
+        var mensaje = this.ficha.moverFicha(posiciones);
         if(this.ficha.esBancarrota()) {            
             this.juego.eliminarUsuario(this);
             console.log("Te han eliminado");
+            mensaje = "Estas en Bancarrota, has perdido";
         }
+        return mensaje;
     };
     
     this.comprar = function(){
        if(this.ficha.esBancarrota()) {
-        console.log("Te han eliminado");
-    }else{
-        this.juego.comprar(this.ficha);
-    }
+            console.log("Te han eliminado");
+        }else{
+            this.juego.comprar(this.ficha);
+        }
 }
 this.venderCasa= function(posicion){
         /*var titulo = juego.tablero.obtenerCasilla(posicion).tema.titulo;
@@ -903,8 +926,10 @@ this.venderCasa= function(posicion){
     }
     
     this.pagarFianzaCarcel=function(){
-        this.ficha.pagar(50);
-        this.ficha.salirCarcel();
+        if(!this.ficha.esBancarrota()){
+            this.ficha.pagar(50);
+            this.ficha.salirCarcel();
+        }
     }
     
     this.usarTarjetaCarcel=function(){
@@ -966,7 +991,7 @@ function Ficha(color, posicion,juego){
     };
     
     this.esBancarrota=function(){
-        return (this.saldo<0) && (this.numPropiedades==0);
+        return (this.saldo < 0);// && (this.numPropiedades==0);
     }
     
     this.moverFichaCarcel = function (avance){        
@@ -1042,7 +1067,7 @@ function Partida(dado){
     this.tablero = null;
     this.dado=dado;
     this.turno = 0;
-    this.SALDO_MAX = 3000000;
+    this.SALDO_MAX = 300000;
     this.estado = new EstadoInicio(this);
     
     this.getUid=function(){
@@ -1102,7 +1127,7 @@ this.iniciarTurno=function(){
     
     this.pasarTurno = function(){
         this.usuarios[this.turno].ficha.quitarTurno();   
-        if(this.usuarios[this.turno].ficha.saldo >= this.SALDO_MAX){
+        if(this.usuarios[this.turno].ficha.saldo >= this.SALDO_MAX ){
             console.log("El juego ha terminado, ha ganado el jugador: " + this.usuarios[this.turno].nombre);
             this.siguienteEstado();
         }

@@ -273,6 +273,13 @@ app.get("/puja/:uid-:pelotis",function(request,response){
   console.log("entre en la puja: " + request.params.pelotis )
   response.send({status:"ok"});
 });
+app.get("/pagarFianzaCarcel/:uid",function(request,response){
+  var usuario = juego.getUser(request.params.uid);
+  usuario.pagarFianzaCarcel();
+  update();
+  response.send({status:"ok"});
+});
+
 
 // generar json
 function getJson(uid){
@@ -280,13 +287,14 @@ function getJson(uid){
   var propiedades= jugador.ficha.propiedades;
   var newPropiedades=[];
   for(i=0;i<propiedades.length;i++){
-   
-    newPropiedades[i]= {
-      nombre: propiedades[i].tema.nombre, 
-      color: propiedades[i].tema.color, 
-      posicion: propiedades[i].tema.posicion,
-      estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
-    };
+   if(propiedades[i].tema!=undefined){
+      newPropiedades[i]= {
+        nombre: propiedades[i].tema.nombre, 
+        color: propiedades[i].tema.color, 
+        posicion: propiedades[i].tema.posicion,
+        estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
+      };
+    }
   }
   
   
@@ -300,7 +308,8 @@ function getJson(uid){
   "jugadores":juego.numUsuarios,
   "propiedades":newPropiedades,
   "tarjetas": jugador.ficha.numTarjetas,
-  "status": "ok"
+  "status": "ok",
+  "carcel":jugador.ficha.carcel.nombre
 };
    // console.log(jsonData);
    return jsonData;

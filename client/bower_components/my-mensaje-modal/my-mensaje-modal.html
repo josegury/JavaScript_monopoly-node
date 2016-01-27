@@ -45,7 +45,7 @@
         },
         aceptarClick: function(e){
               var puja = this.$$('#puja');
-              if(puja.value == ""){
+              if(puja.value == "" || puja.value < 0 || puja.value > $.cookie("saldo")){
                 puja.value = 0;
               }
               pujarCasa(puja.value);  

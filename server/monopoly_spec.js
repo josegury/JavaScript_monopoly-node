@@ -237,7 +237,14 @@ describe("Test del Monopoly",function(){
     
     });
 	
-	describe("Comprobar Construccion",function(){	      
+	describe("Comprobar Construccion",function(){	  
+  it("Comprar Casilla sin Dinero",function(){
+         juego.siguienteEstado();
+          usuario.ficha.posicion=1;
+          usuario.ficha.saldo=0;
+          usuario.comprar();        
+            expect(usuario.ficha.numPropiedades).toEqual(0);
+       });    
       it("Comprar Casilla",function(){
          juego.siguienteEstado();
           usuario.ficha.posicion=1;
@@ -512,6 +519,7 @@ describe("Test del Monopoly",function(){
         it("Eliminar usuario",function(){
              juego.siguienteEstado();
              usuario.ficha.saldo = -1;
+             console.log("Bancarrota: ---->"+usuario.ficha.esBancarrota());
              expect(juego.usuarios.length).toEqual(2); 
              usuario.tirarDadoTest(1);
              expect(juego.usuarios.length).toEqual(1);  
@@ -665,7 +673,7 @@ describe("Test del Monopoly",function(){
             usuario_.tirarDadoTest(9);
             usuario_.pujar(100);
             expect(usuario.juego.estado.cantidad ).toEqual(100);
-            expect(usuario.juego.estado.usuario ).toEqual(usuario_);
+            expect(usuario.juego.estado.comprador ).toEqual(usuario_);
         });
         it("Terminar Subasta",function(){  
             usuario.iniciarJuego();
