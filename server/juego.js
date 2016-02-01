@@ -446,8 +446,9 @@ function EstadoLibreCarcel(){
     this.moverFicha = function (avance,ficha){
         var postAnt = ficha.posicion;
         ficha.posicion = (ficha.posicion + avance)%40;
-        if (postAnt >= 28 && ficha.posicion >= 0){
-            ficha.cobrar(200);//casilla de salida
+        if (postAnt >= 28 && ficha.posicion >= 0 && ficha.posicion < 11){
+            console.log("paga por pasar por la casilla de salida");
+            ficha.cobrar(2000);//casilla de salida
             console.log(ficha.saldo);
         }
         var msg= ficha.juego.caerCasilla(ficha);
@@ -556,9 +557,9 @@ function Tablero(numCasillas){
 function TemaCajaComunidad(dinero){
 	this.nombre="Comunidad"
 	this.dinero=dinero   
-    this.caerCasilla=function(ficha){
-        ficha.pagar(this.dinero);        
-        return "Pagas a la comunidad: " + this.dinero +" Pelotis";
+    this.caerCasilla=function(ficha){ 
+        ficha.pagar(this.dinero); 
+        console.log("2. cae en comunidad, saldo: " + ficha.saldo);    
     }
 }
 
@@ -823,9 +824,11 @@ function Usuario(nombre,juego){
     this.tirarDado = function(){
         var posiciones1 = this.dado.tirar();
         var posiciones2 = this.dado.tirar();
+
         var mensaje;
+
         if(this.dobles==3){
-            mensaje= "Has sacado dobles." + this.ficha.moverFichaCarcel(posiciones1+posiciones2);  
+            mensaje= "Has sacado dobles." ;  
         }else{
             if(posiciones1==posiciones2){
                 this.dobles++;
@@ -885,8 +888,10 @@ function Usuario(nombre,juego){
     
     this.tirarDadoTest = function(posicion){
         var posiciones = posicion;
+
         var mensaje = this.ficha.moverFicha(posiciones);
-        if(this.ficha.esBancarrota()) {            
+
+       if(this.ficha.esBancarrota()) {            
             this.juego.eliminarUsuario(this);
             console.log("Te han eliminado");
             mensaje = "Estas en Bancarrota, has perdido";

@@ -286,14 +286,16 @@ function getJson(uid){
   var jugador = juego.getUser(uid);
   var propiedades= jugador.ficha.propiedades;
   var newPropiedades=[];
-  for(i=0;i<propiedades.length;i++){
-   if(propiedades[i].tema!=undefined){
-      newPropiedades[i]= {
-        nombre: propiedades[i].tema.nombre, 
-        color: propiedades[i].tema.color, 
-        posicion: propiedades[i].tema.posicion,
-        estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
-      };
+  if(propiedades!=undefined){
+    for(i=0;i<propiedades.length;i++){
+     if(propiedades[i] != undefined && propiedades[i].tema!=undefined){
+        newPropiedades[i]= {
+          nombre: propiedades[i].tema.nombre, 
+          color: propiedades[i].tema.color, 
+          posicion: propiedades[i].tema.posicion,
+          estadoCasilla: juego.tablero.obtenerCasilla(propiedades[i].tema.posicion).estadoCasilla.nombre
+        };
+      }
     }
   }
   

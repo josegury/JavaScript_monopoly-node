@@ -124,7 +124,7 @@ function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,pro
     
 }
 function mostrarMensaje(cabecera,cuerpo){
-    if(cabecera != undefined || cuerpo != undefined){
+    if( cuerpo != undefined && cuerpo.indexOf("undefined") != -1){
         var mensaje = document.getElementById('mensaje');
         mensaje.abrir_mensaje(cabecera,cuerpo);
     }
