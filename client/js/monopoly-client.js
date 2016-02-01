@@ -1,5 +1,5 @@
-var url="http://127.0.0.1/";
-//var url="http://monoply.cloudapp.net/"
+//var url="http://127.0.0.1/";
+var url="http://monoply.cloudapp.net/"
 var usuarioUid=$.cookie("uid");;
 var socket = io(url);
 
@@ -124,7 +124,7 @@ function mostrarDatosJugador(nombre,uid,color,estado,numUsuarios,turno,saldo,pro
     
 }
 function mostrarMensaje(cabecera,cuerpo){
-    if( cuerpo != undefined && cuerpo.indexOf("undefined") != -1){
+    if( cuerpo != undefined && cuerpo.indexOf("undefined") < 0){
         var mensaje = document.getElementById('mensaje');
         mensaje.abrir_mensaje(cabecera,cuerpo);
     }
@@ -234,11 +234,12 @@ function pagarFianzaCarcel(){
 function pujarCasa(pelotis){
   //  console.log(posicion);
      var mensaje_modal = document.getElementById('mensaje_modal');
-  if($.cookie("saldo") < pelotis){
+  if( parseInt($.cookie("saldo")) < pelotis){
     //mandar mensaje de nuevo
         mensaje_modal.abrir_mensaje("Subasta","No puedes ofrecer mas dinero del que tienes");
   }
   else{
+    console.log(pelotis);
   $.getJSON(url+"puja/"+$.cookie("uid")+"-"+pelotis,function(data){
     
          //.......

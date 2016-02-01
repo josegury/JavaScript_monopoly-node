@@ -268,9 +268,9 @@ app.get("/subasta/:uid-:posicion",function(request,response){
 
 app.get("/puja/:uid-:pelotis",function(request,response){
   var usuario = juego.getUser(request.params.uid);
+  console.log("entre en la puja: " + request.params.pelotis )
   usuario.pujar(request.params.pelotis);
   update();
-  console.log("entre en la puja: " + request.params.pelotis )
   response.send({status:"ok"});
 });
 app.get("/pagarFianzaCarcel/:uid",function(request,response){

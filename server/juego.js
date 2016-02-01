@@ -829,6 +829,7 @@ function Usuario(nombre,juego){
 
         if(this.dobles==3){
             mensaje= "Has sacado dobles." ;  
+            this.dobles=1;
         }else{
             if(posiciones1==posiciones2){
                 this.dobles++;
